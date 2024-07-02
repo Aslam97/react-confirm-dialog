@@ -51,7 +51,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@omit/confirm-dialog':
+      '@omit/react-confirm-dialog':
         specifier: workspace:*
         version: link:../../packages/confirm-dialog
       next:
