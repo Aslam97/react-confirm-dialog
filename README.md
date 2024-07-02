@@ -97,6 +97,8 @@ type ConfirmOptions = {
 
 ## Non Shadcn UI Usage
 
+> Please note that you can always customize the class name to match your design system.
+
 Update your `tailwind.config.js` to include the following:
 
 ```js
