@@ -1,6 +1,6 @@
 'use client'
 
-import { useConfirm } from '@omit/confirm-dialog'
+import { useConfirm } from '@omit/react-confirm-dialog'
 
 export const ConfirmComp = () => {
   const confirm = useConfirm()
