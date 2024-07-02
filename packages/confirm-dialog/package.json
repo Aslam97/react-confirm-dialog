@@ -1,0 +1,55 @@
+{
+  "name": "@omit/confirm-dialog",
+  "version": "0.1.0",
+  "description": "A simple confirm dialog for React",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/**/*.ts*"
+  },
+  "keywords": [
+    "react",
+    "dialog",
+    "confirm-dialog",
+    "react-confirm-dialog",
+    "react-dialog"
+  ],
+  "author": "Aslam H <iupin5212@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^6.7.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.3.0"
+  }
+}

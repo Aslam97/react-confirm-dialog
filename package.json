@@ -1,5 +1,5 @@
 {
-  "name": "react-confirm-input",
+  "name": "root",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,9 +8,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.2",
     "turbo": "^2.0.6",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
