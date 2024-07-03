@@ -1,5 +1,9 @@
-import { ConfirmComp } from './confirm'
+import { Usage } from './components/usage'
 
 export default function Home() {
-  return <ConfirmComp />
+  return (
+    <>
+      <Usage />
+    </>
+  )
 }
