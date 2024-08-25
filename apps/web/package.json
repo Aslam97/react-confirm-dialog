@@ -11,7 +11,7 @@
   "dependencies": {
     "@omit/react-confirm-dialog": "workspace:*",
     "copy-to-clipboard": "^3.3.3",
-    "framer-motion": "^11.2.12",
+    "framer-motion": "^11.3.30",
     "next": "14.2.4",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
@@ -19,16 +19,16 @@
     "react-live": "^4.1.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
-    "@types/node": "^20.14.9",
-    "@types/react": "^18.3.3",
+    "@babel/core": "^7.25.2",
+    "@types/node": "^20.16.1",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.4",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.4",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
