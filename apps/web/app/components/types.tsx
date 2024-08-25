@@ -141,7 +141,9 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   title: 'Warning',
   description: 'This action may have consequences.',
   icon: <AlertTriangle className="size-4 text-yellow-500" />,
-  confirmButton: { className: 'bg-yellow-500 hover:bg-yellow-600 text-white' },
+  confirmButton: {
+    className: 'bg-yellow-500 hover:bg-yellow-600 text-white'
+  },
   alertDialogTitle: {
     className: 'flex items-center gap-2'
   }
@@ -168,8 +170,12 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   icon: <Trash className="size-4 text-destructive" />,
   confirmText: 'Delete',
   cancelText: 'Cancel',
+  cancelButton: {
+    size: 'default,
+    variant: 'outline'
+  },
   confirmButton: {
-    className: 'bg-red-500 hover:bg-red-600 text-white',
+    className: 'bg-red-500 hover:bg-red-600 text-white'
   },
   alertDialogTitle: {
     className: 'flex items-center gap-2'
@@ -183,6 +189,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
         confirmText: 'Delete',
         cancelText: 'Cancel',
         cancelButton: {
+          size: 'default',
           variant: 'outline'
         },
         confirmButton: {
@@ -201,14 +208,23 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   description: 'This dialog has custom action buttons.',
   customActions: (onConfirm, onCancel) => (
     <>
-      <Button onClick={onCancel} variant="outline">No, thanks</Button>
-      <Button onClick={onConfirm} variant="default">Yes, please</Button>
-      <Button onClick={() => {
-        console.log('Custom action');
-        onCancel();
-      }} variant="secondary">Maybe later</Button>
+      <Button onClick={onCancel} variant="outline">
+        No, thanks
+      </Button>
+      <Button onClick={onConfirm} variant="default">
+        Yes, please
+      </Button>
+      <Button
+        onClick={() => {
+          console.log('Custom action')
+          onCancel()
+        }}
+        variant="secondary"
+      >
+        Maybe later
+      </Button>
     </>
-  ),
+  )
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
       confirm({
