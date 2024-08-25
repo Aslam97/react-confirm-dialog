@@ -36,6 +36,8 @@ export const ConfirmDialogProvider = ({ children, defaultOptions }: Props) => {
 export default ConfirmDialogProvider
 
 // layout.tsx
+import { ConfirmDialogProvider } from '@/confirm-dialog-provider'
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -46,7 +48,6 @@ export default function RootLayout({
       <body>
         <ConfirmDialogProvider>
           {children}
-          <Analytics />
         </ConfirmDialogProvider>
       </body>
     </html>
