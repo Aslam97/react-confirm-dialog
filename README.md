@@ -22,6 +22,8 @@ If you are using [Shadcn UI](https://ui.shadcn.com), you can copy the following 
 - packages/
   - confirm-dialog/
     - src/
+      - components/ui/
+        - alert-dialog.tsx
       - confirm-dialog.tsx
 ```
 
@@ -72,84 +74,15 @@ function YourComponent() {
 }
 ```
 
-## Customization
+1. Include the lib classes into your tailwind configuration:
 
-You can customize the appearance and behavior of the confirm dialog by passing options to the `confirm` function:
-
-```jsx
-confirm({
-  title: 'Custom Dialog',
-  description: 'This is a custom confirm dialog.',
-  confirmText: 'OK',
-  cancelText: 'No, thanks',
-  icon: <CustomIcon />,
-  confirmButton: {
-    variant: 'destructive',
-    size: 'sm'
-  },
-  cancelButton: {
-    variant: 'outline',
-    size: 'sm'
-  },
-  alertDialogContent: {
-    className: 'custom-dialog-content'
-  }
-  // ... other customization options
-})
-```
-
-### Setting Default Options
-
-You can set default options for all confirm dialogs in your app by passing `defaultOptions` to the `ConfirmDialogProvider`:
-
-```jsx
-<ConfirmDialogProvider
-  defaultOptions={{
-    confirmText: 'Yes',
-    cancelText: 'No',
-    alertDialogContent: { className: 'my-default-dialog-class' }
-  }}
->
-  {/* Your app components */}
-</ConfirmDialogProvider>
-```
-
-## API
-
-### ConfirmOptions
-
-The `confirm` function accepts an options object with the following properties:
-
-```typescript
-type ConfirmOptions = {
-  title: React.ReactNode
-  description?: React.ReactNode
-  confirmButton?: {
-    // any normal react button props and Shadcn UI Button props
-    size?: 'sm' | 'lg' | 'icon'
-    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  }
-  cancelButton?: {
-    // any normal react button props and Shadcn UI Button props
-    size?: 'sm' | 'lg' | 'icon'
-    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  } | null // set to null to hide the cancel button
-  confirmText?: string // default: 'Confirm'
-  cancelText?: string // default: 'Cancel'
-  icon?: React.ReactNode
-  customActions?: (
-    onConfirm: () => void,
-    onCancel: () => void
-  ) => React.ReactNode
-  alertDialog?: React.ComponentPropsWithoutRef<typeof AlertDialog>
-  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
-  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
-  alertDialogHeader?: React.HTMLAttributes<HTMLDivElement>
-  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
-  alertDialogDescription?: React.ComponentPropsWithoutRef<
-    typeof AlertDialogDescription
-  >
-  alertDialogFooter?: React.HTMLAttributes<HTMLDivElement>
+```js
+module.exports = {
+  content: [
+    './node_modules/@omit/react-confirm-dialog/dist/index.js'
+    // ... your other content paths
+  ]
+  // ... other configurations
 }
 ```
 
@@ -161,10 +94,6 @@ If you're not using Shadcn UI, you'll need to set up your Tailwind CSS configura
 
 ```js
 module.exports = {
-  content: [
-    './node_modules/@omit/react-confirm-dialog/dist/index.js'
-    // ... your other content paths
-  ],
   theme: {
     extend: {
       colors: {
@@ -240,6 +169,86 @@ module.exports = {
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
+}
+```
+
+## Customization
+
+You can customize the appearance and behavior of the confirm dialog by passing options to the `confirm` function:
+
+```jsx
+confirm({
+  title: 'Custom Dialog',
+  description: 'This is a custom confirm dialog.',
+  confirmText: 'OK',
+  cancelText: 'No, thanks',
+  icon: <CustomIcon />,
+  confirmButton: {
+    variant: 'destructive',
+    size: 'sm'
+  },
+  cancelButton: {
+    variant: 'outline',
+    size: 'sm'
+  },
+  alertDialogContent: {
+    className: 'custom-dialog-content'
+  }
+  // ... other customization options
+})
+```
+
+### Setting Default Options
+
+You can set default options for all confirm dialogs in your app by passing `defaultOptions` to the `ConfirmDialogProvider`:
+
+```jsx
+<ConfirmDialogProvider
+  defaultOptions={{
+    confirmText: 'Yes',
+    cancelText: 'No',
+    alertDialogContent: { className: 'my-default-dialog-class' }
+  }}
+>
+  {/* Your app components */}
+</ConfirmDialogProvider>
+```
+
+## API
+
+### ConfirmOptions
+
+The `confirm` function accepts an options object with the following properties:
+
+```typescript
+type ConfirmOptions = {
+  title: React.ReactNode
+  description?: React.ReactNode
+  confirmButton?: {
+    // any normal react button props and Shadcn UI Button props
+    size?: 'sm' | 'lg' | 'icon'
+    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  }
+  cancelButton?: {
+    // any normal react button props and Shadcn UI Button props
+    size?: 'sm' | 'lg' | 'icon'
+    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  } | null // set to null to hide the cancel button
+  confirmText?: string // default: 'Confirm'
+  cancelText?: string // default: 'Cancel'
+  icon?: React.ReactNode
+  customActions?: (
+    onConfirm: () => void,
+    onCancel: () => void
+  ) => React.ReactNode
+  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
+  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
+  alertDialogHeader?: React.HTMLAttributes<HTMLDivElement>
+  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
+  alertDialogDescription?: React.ComponentPropsWithoutRef<
+    typeof AlertDialogDescription
+  >
+  alertDialogFooter?: React.HTMLAttributes<HTMLDivElement>
 }
 ```
 
