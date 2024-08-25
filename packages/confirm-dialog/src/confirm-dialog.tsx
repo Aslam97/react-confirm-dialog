@@ -3,7 +3,9 @@ import React, {
   useCallback,
   useMemo,
   useRef,
-  useContext
+  useContext,
+  createContext,
+  memo
 } from 'react'
 import {
   AlertDialog,
@@ -13,6 +15,8 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogPortal,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import type {
@@ -20,7 +24,7 @@ import type {
   AlertDialogActionProps
 } from '@/components/ui/alert-dialog'
 
-export type ConfirmOptions = {
+export interface ConfirmOptions {
   title?: React.ReactNode
   description?: React.ReactNode
   confirmButton?: AlertDialogActionProps
@@ -32,6 +36,7 @@ export type ConfirmOptions = {
     onConfirm: () => void,
     onCancel: () => void
   ) => React.ReactNode
+  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
   alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
   alertDialogHeader?: React.ComponentPropsWithoutRef<typeof AlertDialogHeader>
   alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
@@ -45,9 +50,9 @@ export interface ConfirmContextType {
   confirm: (options: ConfirmOptions) => Promise<boolean>
 }
 
-export const ConfirmContext = React.createContext<
-  ConfirmContextType | undefined
->(undefined)
+export const ConfirmContext = createContext<ConfirmContextType | undefined>(
+  undefined
+)
 
 const baseDefaultOptions: ConfirmOptions = {
   title: '',
@@ -67,7 +72,7 @@ const ConfirmDialogContent: React.FC<{
   config: ConfirmOptions
   onConfirm: () => void
   onCancel: () => void
-}> = React.memo(({ config, onConfirm, onCancel }) => {
+}> = memo(({ config, onConfirm, onCancel }) => {
   const {
     title,
     description,
@@ -77,6 +82,7 @@ const ConfirmDialogContent: React.FC<{
     cancelText,
     icon,
     customActions,
+    alertDialogOverlay,
     alertDialogContent,
     alertDialogHeader,
     alertDialogTitle,
@@ -85,37 +91,40 @@ const ConfirmDialogContent: React.FC<{
   } = config
 
   return (
-    <AlertDialogContent {...alertDialogContent}>
-      <AlertDialogHeader {...alertDialogHeader}>
-        {(title || icon) && (
-          <AlertDialogTitle {...alertDialogTitle}>
-            {icon}
-            {title}
-          </AlertDialogTitle>
-        )}
-        {description && (
-          <AlertDialogDescription {...alertDialogDescription}>
-            {description}
-          </AlertDialogDescription>
-        )}
-      </AlertDialogHeader>
-      <AlertDialogFooter {...alertDialogFooter}>
-        {customActions ? (
-          customActions(onConfirm, onCancel)
-        ) : (
-          <>
-            {cancelButton !== null && (
-              <AlertDialogCancel onClick={onCancel} {...cancelButton}>
-                {cancelText}
-              </AlertDialogCancel>
-            )}
-            <AlertDialogAction onClick={onConfirm} {...confirmButton}>
-              {confirmText}
-            </AlertDialogAction>
-          </>
-        )}
-      </AlertDialogFooter>
-    </AlertDialogContent>
+    <AlertDialogPortal>
+      <AlertDialogOverlay {...alertDialogOverlay} />
+      <AlertDialogContent {...alertDialogContent}>
+        <AlertDialogHeader {...alertDialogHeader}>
+          {(title || icon) && (
+            <AlertDialogTitle {...alertDialogTitle}>
+              {icon}
+              {title}
+            </AlertDialogTitle>
+          )}
+          {description && (
+            <AlertDialogDescription {...alertDialogDescription}>
+              {description}
+            </AlertDialogDescription>
+          )}
+        </AlertDialogHeader>
+        <AlertDialogFooter {...alertDialogFooter}>
+          {customActions ? (
+            customActions(onConfirm, onCancel)
+          ) : (
+            <>
+              {cancelButton !== null && (
+                <AlertDialogCancel onClick={onCancel} {...cancelButton}>
+                  {cancelText}
+                </AlertDialogCancel>
+              )}
+              <AlertDialogAction onClick={onConfirm} {...confirmButton}>
+                {confirmText}
+              </AlertDialogAction>
+            </>
+          )}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialogPortal>
   )
 })
 
@@ -127,7 +136,7 @@ const ConfirmDialog: React.FC<{
   config: ConfirmOptions
   onConfirm: () => void
   onCancel: () => void
-}> = React.memo(({ isOpen, onOpenChange, config, onConfirm, onCancel }) => (
+}> = memo(({ isOpen, onOpenChange, config, onConfirm, onCancel }) => (
   <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
     <ConfirmDialogContent
       config={config}
@@ -201,5 +210,3 @@ export const useConfirm = (): ((
   }
   return context.confirm
 }
-
-export default ConfirmDialogProvider

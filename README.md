@@ -142,6 +142,7 @@ type ConfirmOptions = {
     onCancel: () => void
   ) => React.ReactNode
   alertDialog?: React.ComponentPropsWithoutRef<typeof AlertDialog>
+  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
   alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
   alertDialogHeader?: React.HTMLAttributes<HTMLDivElement>
   alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
@@ -161,7 +162,7 @@ If you're not using Shadcn UI, you'll need to set up your Tailwind CSS configura
 ```js
 module.exports = {
   content: [
-    './node_modules/@omit/react-confirm-dialog/**/*.{js,ts,jsx,tsx}'
+    './node_modules/@omit/react-confirm-dialog/dist/index.js'
     // ... your other content paths
   ],
   theme: {
@@ -194,7 +195,8 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  plugins: [require('tailwindcss-animate')]
 }
 ```
 

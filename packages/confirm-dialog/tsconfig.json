@@ -1,11 +1,33 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "React Confirm Dialog",
   "compilerOptions": {
-    "jsx": "react",
-    "moduleResolution": "node",
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "dom"],
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "Bundler",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+
+    "lib": ["ES2015", "DOM"],
+    "module": "ESNext",
+    "target": "ES6",
+    "jsx": "react-jsx",
+    "noEmit": true,
+
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
 }

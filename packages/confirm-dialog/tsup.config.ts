@@ -6,6 +6,7 @@ export default defineConfig({
   target: 'es2018',
   external: ['react'],
   sourcemap: true,
+  clean: true,
   dts: true,
   format: ['esm', 'cjs']
 })
