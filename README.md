@@ -1,4 +1,4 @@
-![React Confirm Dialog](https://i.postimg.cc/nV9HDsQy/Screenshot-2024-08-25-at-21-02-29.png)
+![React Confirm Dialog](https://i.postimg.cc/yNGM1Pnk/Screenshot-2024-08-25-at-21-05-43.png)
 
 # React Confirm Dialog
 
