@@ -1,4 +1,10 @@
-import * as React from 'react'
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useContext
+} from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,110 +15,172 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { ConfirmContext } from './confirm-context'
 import type {
-  ConfirmDialogProps,
-  ConfirmDialogProviderProps,
-  ConfirmOptions
-} from './types'
+  AlertDialogCancelProps,
+  AlertDialogActionProps
+} from '@/components/ui/alert-dialog'
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
-  isOpen,
-  onOpenChange,
-  config: {
+export type ConfirmOptions = {
+  title?: React.ReactNode
+  description?: React.ReactNode
+  confirmButton?: AlertDialogActionProps
+  cancelButton?: AlertDialogCancelProps | null
+  confirmText?: string
+  cancelText?: string
+  icon?: React.ReactNode
+  customActions?: (
+    onConfirm: () => void,
+    onCancel: () => void
+  ) => React.ReactNode
+  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
+  alertDialogHeader?: React.ComponentPropsWithoutRef<typeof AlertDialogHeader>
+  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
+  alertDialogDescription?: React.ComponentPropsWithoutRef<
+    typeof AlertDialogDescription
+  >
+  alertDialogFooter?: React.ComponentPropsWithoutRef<typeof AlertDialogFooter>
+}
+
+export interface ConfirmContextType {
+  confirm: (options: ConfirmOptions) => Promise<boolean>
+}
+
+export const ConfirmContext = React.createContext<
+  ConfirmContextType | undefined
+>(undefined)
+
+const baseDefaultOptions: ConfirmOptions = {
+  title: '',
+  description: '',
+  confirmText: 'Confirm',
+  cancelText: 'Cancel',
+  confirmButton: {},
+  cancelButton: {},
+  alertDialogContent: {},
+  alertDialogHeader: {},
+  alertDialogTitle: {},
+  alertDialogDescription: {},
+  alertDialogFooter: {}
+}
+
+const ConfirmDialogContent: React.FC<{
+  config: ConfirmOptions
+  onConfirm: () => void
+  onCancel: () => void
+}> = React.memo(({ config, onConfirm, onCancel }) => {
+  const {
     title,
     description,
     cancelButton,
     confirmButton,
-    confirmText = 'Confirm',
-    cancelText = 'Cancel',
+    confirmText,
+    cancelText,
     icon,
     customActions,
-    alertDialog,
     alertDialogContent,
     alertDialogHeader,
     alertDialogTitle,
     alertDialogDescription,
     alertDialogFooter
-  },
-  onConfirm,
-  onCancel
-}) => {
+  } = config
+
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange} {...alertDialog}>
-      <AlertDialogContent {...alertDialogContent}>
-        <AlertDialogHeader {...alertDialogHeader}>
+    <AlertDialogContent {...alertDialogContent}>
+      <AlertDialogHeader {...alertDialogHeader}>
+        {(title || icon) && (
           <AlertDialogTitle {...alertDialogTitle}>
-            {icon && icon}
+            {icon}
             {title}
           </AlertDialogTitle>
-
+        )}
+        {description && (
           <AlertDialogDescription {...alertDialogDescription}>
-            {description && description}
+            {description}
           </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter {...alertDialogFooter}>
-          {customActions ? (
-            customActions(onConfirm, onCancel)
-          ) : (
-            <>
-              <AlertDialogCancel asChild>
-                <Button onClick={onCancel} {...cancelButton}>
-                  {cancelText}
-                </Button>
+        )}
+      </AlertDialogHeader>
+      <AlertDialogFooter {...alertDialogFooter}>
+        {customActions ? (
+          customActions(onConfirm, onCancel)
+        ) : (
+          <>
+            {cancelButton !== null && (
+              <AlertDialogCancel onClick={onCancel} {...cancelButton}>
+                {cancelText}
               </AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button onClick={onConfirm} {...confirmButton}>
-                  {confirmText}
-                </Button>
-              </AlertDialogAction>
-            </>
-          )}
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            )}
+            <AlertDialogAction onClick={onConfirm} {...confirmButton}>
+              {confirmText}
+            </AlertDialogAction>
+          </>
+        )}
+      </AlertDialogFooter>
+    </AlertDialogContent>
   )
-}
+})
 
-export const ConfirmDialogProvider: React.FC<ConfirmDialogProviderProps> = ({
-  defaultOptions = {},
-  children
-}) => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [options, setOptions] =
-    React.useState<Partial<ConfirmOptions>>(defaultOptions)
-  const [resolver, setResolver] = React.useState<(value: boolean) => void>(
-    () => {}
-  )
+ConfirmDialogContent.displayName = 'ConfirmDialogContent'
 
-  const confirm = React.useCallback(
-    (options: ConfirmOptions) => {
-      setOptions({ ...defaultOptions, ...options })
-      setIsOpen(true)
-      return new Promise<boolean>((resolve) => {
-        setResolver(() => resolve)
-      })
-    },
+const ConfirmDialog: React.FC<{
+  isOpen: boolean
+  onOpenChange: (isOpen: boolean) => void
+  config: ConfirmOptions
+  onConfirm: () => void
+  onCancel: () => void
+}> = React.memo(({ isOpen, onOpenChange, config, onConfirm, onCancel }) => (
+  <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+    <ConfirmDialogContent
+      config={config}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+    />
+  </AlertDialog>
+))
+
+ConfirmDialog.displayName = 'ConfirmDialog'
+
+export const ConfirmDialogProvider: React.FC<{
+  defaultOptions?: ConfirmOptions
+  children: React.ReactNode
+}> = ({ defaultOptions = {}, children }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [options, setOptions] = useState<ConfirmOptions>(baseDefaultOptions)
+  const resolverRef = useRef<((value: boolean) => void) | null>(null)
+
+  const mergedDefaultOptions = useMemo(
+    () => ({
+      ...baseDefaultOptions,
+      ...defaultOptions
+    }),
     [defaultOptions]
   )
 
-  const handleConfirm = React.useCallback(() => {
-    setIsOpen(false)
-    resolver(true)
-  }, [resolver])
+  const confirm = useCallback(
+    (newOptions: ConfirmOptions) => {
+      setOptions({ ...mergedDefaultOptions, ...newOptions })
+      setIsOpen(true)
+      return new Promise<boolean>((resolve) => {
+        resolverRef.current = resolve
+      })
+    },
+    [mergedDefaultOptions]
+  )
 
-  const handleCancel = React.useCallback(() => {
+  const handleConfirm = useCallback(() => {
     setIsOpen(false)
-    resolver(false)
-  }, [resolver])
+    if (resolverRef.current) resolverRef.current(true)
+  }, [])
 
-  const contextValue = React.useMemo(() => ({ confirm }), [confirm])
+  const handleCancel = useCallback(() => {
+    setIsOpen(false)
+    if (resolverRef.current) resolverRef.current(false)
+  }, [])
+
+  const contextValue = useMemo(() => ({ confirm }), [confirm])
 
   return (
     <ConfirmContext.Provider value={contextValue}>
       {children}
-
       <ConfirmDialog
         isOpen={isOpen}
         onOpenChange={setIsOpen}
@@ -123,3 +191,15 @@ export const ConfirmDialogProvider: React.FC<ConfirmDialogProviderProps> = ({
     </ConfirmContext.Provider>
   )
 }
+
+export const useConfirm = (): ((
+  options: ConfirmOptions
+) => Promise<boolean>) => {
+  const context = useContext(ConfirmContext)
+  if (!context) {
+    throw new Error('useConfirm must be used within a ConfirmDialogProvider')
+  }
+  return context.confirm
+}
+
+export default ConfirmDialogProvider

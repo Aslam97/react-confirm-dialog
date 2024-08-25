@@ -10,13 +10,18 @@
   },
   "dependencies": {
     "@omit/react-confirm-dialog": "workspace:*",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
     "framer-motion": "^11.3.30",
+    "lucide-react": "^0.435.0",
     "next": "14.2.4",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-live": "^4.1.7"
+    "react-use-measure": "^2.1.1",
+    "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

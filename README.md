@@ -1,111 +1,167 @@
 # React Confirm Dialog
 
-The goal is to make [AlertDialog](https://ui.shadcn.com/docs/components/alert-dialog) component from Shadcn UI available globally, so it can be used anywhere in your app.
+A flexible and customizable confirm dialog component for React applications, built with accessibility in mind. This component makes the [AlertDialog](https://ui.shadcn.com/docs/components/alert-dialog) from Shadcn UI available globally, so it can be used anywhere in your app.
 
-## Usage
+## Features
 
-If you are using [Shadcn UI](https://ui.shadcn.com) you can create folder name `confirm-dialog` and copy the following file to that folder:
+- Easy to use with the `useConfirm` hook
+- Fully customizable appearance and behavior
+- Accessible, built on top of the `AlertDialog` from `@radix-ui/react-alert-dialog`
+- Supports custom actions
+- Seamless integration with Shadcn UI
 
-```bash
+## Installation
+
+### For Shadcn UI Users
+
+If you are using [Shadcn UI](https://ui.shadcn.com), you can copy the following files:
+
+```
 - packages/
   - confirm-dialog/
     - src/
-      - index.ts
-      - confirm-context.ts
       - confirm-dialog.tsx
-      - types.ts
-      - use-confirm.ts
 ```
 
-If you not using Shadcn UI or prefer to install via npm, you can install it via npm:
+### For Non-Shadcn UI Users
+
+If you're not using Shadcn UI or prefer to install via npm, you can install it using:
 
 ```bash
 npm install @omit/react-confirm-dialog
 ```
 
-Add `<ConfirmDialogProvider />` to your app, After that you can use `useConfirm()` from anywhere in your app.
+## Basic Usage
 
-```tsx
+1. Wrap your app with the `ConfirmDialogProvider`:
+
+```jsx
 import { ConfirmDialogProvider } from '@omit/react-confirm-dialog'
 
 function App() {
   return (
-    <ConfirmDialogProvider>
-      <YourComponent />
-    </ConfirmDialogProvider>
+    <ConfirmDialogProvider>{/* Your app components */}</ConfirmDialogProvider>
   )
 }
+```
+
+2. Use the `useConfirm` hook in your components:
+
+```jsx
+import { useConfirm } from '@omit/react-confirm-dialog'
 
 function YourComponent() {
   const confirm = useConfirm()
 
   const handleClick = async () => {
-    const result = await confirm({
-      title: 'Are you sure?'
+    const isConfirmed = await confirm({
+      title: 'Delete Item',
+      description: 'Are you sure you want to delete this item?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel'
     })
 
-    if (result) {
-      console.log('Confirmed')
-    } else {
-      console.log('Canceled')
+    if (isConfirmed) {
+      // Perform delete action
     }
   }
 
-  return <button onClick={handleClick}>Click me</button>
+  return <button onClick={handleClick}>Delete</button>
 }
 ```
 
-## Props
+## Customization
 
-```ts
+You can customize the appearance and behavior of the confirm dialog by passing options to the `confirm` function:
+
+```jsx
+confirm({
+  title: 'Custom Dialog',
+  description: 'This is a custom confirm dialog.',
+  confirmText: 'OK',
+  cancelText: 'No, thanks',
+  icon: <CustomIcon />,
+  confirmButton: {
+    variant: 'destructive',
+    size: 'sm'
+  },
+  cancelButton: {
+    variant: 'outline',
+    size: 'sm'
+  },
+  alertDialogContent: {
+    className: 'custom-dialog-content'
+  }
+  // ... other customization options
+})
+```
+
+### Setting Default Options
+
+You can set default options for all confirm dialogs in your app by passing `defaultOptions` to the `ConfirmDialogProvider`:
+
+```jsx
+<ConfirmDialogProvider
+  defaultOptions={{
+    confirmText: 'Yes',
+    cancelText: 'No',
+    alertDialogContent: { className: 'my-default-dialog-class' }
+  }}
+>
+  {/* Your app components */}
+</ConfirmDialogProvider>
+```
+
+## API
+
+### ConfirmOptions
+
+The `confirm` function accepts an options object with the following properties:
+
+```typescript
 type ConfirmOptions = {
-  title: React.ReactNode | string
-
-  description?: React.ReactNode | string
-
+  title: React.ReactNode
+  description?: React.ReactNode
   confirmButton?: {
     // any normal react button props and Shadcn UI Button props
     size?: 'sm' | 'lg' | 'icon'
     variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
   }
-
   cancelButton?: {
     // any normal react button props and Shadcn UI Button props
     size?: 'sm' | 'lg' | 'icon'
     variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  }
-
+  } | null // set to null to hide the cancel button
   confirmText?: string // default: 'Confirm'
-
   cancelText?: string // default: 'Cancel'
-
   icon?: React.ReactNode
-
   customActions?: (
     onConfirm: () => void,
     onCancel: () => void
   ) => React.ReactNode
-
-  alertDialog?: // any Radix UI AlertDialog props
-  alertDialogContent?: // any Radix UI AlertDialogContent props
-  alertDialogHeader?: // any HTMLDivElement
-  alertDialogTitle?: // any Radix UI AlertDialogTitle props
-  alertDialogDescription?: // any Radix UI AlertDialogDescription props
-  alertDialogFooter?: // any HTMLDivElement
+  alertDialog?: React.ComponentPropsWithoutRef<typeof AlertDialog>
+  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
+  alertDialogHeader?: React.HTMLAttributes<HTMLDivElement>
+  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
+  alertDialogDescription?: React.ComponentPropsWithoutRef<
+    typeof AlertDialogDescription
+  >
+  alertDialogFooter?: React.HTMLAttributes<HTMLDivElement>
 }
 ```
 
-## Non Shadcn UI Usage
+## Non-Shadcn UI Usage
 
-> Please note that you can always customize the class name to match your design system.
+If you're not using Shadcn UI, you'll need to set up your Tailwind CSS configuration to work with this component.
 
-Update your `tailwind.config.js` to include the following:
+1. Update your `tailwind.config.js`:
 
 ```js
 module.exports = {
-  content : [
-    './node_modules/@omit/react-confirm-dialog/**/*.{js,ts,jsx,tsx}',
-  ]
+  content: [
+    './node_modules/@omit/react-confirm-dialog/**/*.{js,ts,jsx,tsx}'
+    // ... your other content paths
+  ],
   theme: {
     extend: {
       colors: {
@@ -136,11 +192,11 @@ module.exports = {
         }
       }
     }
-  },
+  }
 }
 ```
 
-And update your tailwindcss file to include the following. or get your color from [Shadcn UI](https://ui.shadcn.com/themes).
+2. Add the following CSS variables to your main CSS file (or get your colors from [Shadcn UI](https://ui.shadcn.com/themes)):
 
 ```css
 @layer base {
@@ -185,13 +241,21 @@ And update your tailwindcss file to include the following. or get your color fro
 
 ## Tailwind CSS Intellisense
 
-If you using Tailwind CSS Intellisense, add the following to your editor settings. This will make the class name completion work for `className` prop.
+If you're using Tailwind CSS Intellisense, add the following to your editor settings to make the class name completion work for the `className` prop:
 
 ```diff
 {
   "tailwindCSS.experimental.classRegex": [
     "class:\\s*?[\"'`]([^\"'`]*).*?,",
 +    "className:\\s*[\"']([^\"']*)[\"']"
-  ],
+  ]
 }
 ```
+
+## Accessibility
+
+This component is built with accessibility in mind, utilizing the `AlertDialog` from `@radix-ui/react-alert-dialog`. It ensures proper focus management and keyboard navigation.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

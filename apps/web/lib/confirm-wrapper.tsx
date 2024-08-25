@@ -7,10 +7,10 @@ import {
 
 interface Props {
   children: React.ReactNode
-  defaultOptions?: Partial<ConfirmOptions>
+  defaultOptions?: ConfirmOptions
 }
 
-const ConfirmWrapper = ({ children, defaultOptions = {} }: Props) => {
+export const ConfirmWrapper = ({ children, defaultOptions }: Props) => {
   return (
     <ConfirmDialogProvider defaultOptions={defaultOptions}>
       {children}
