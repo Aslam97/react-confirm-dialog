@@ -12,11 +12,11 @@ export const Usage = () => {
           application.
         </p>
       </span>
-      <CodeBlock initialHeight={270}>{`// confirm-wrapper.tsx
+      <CodeBlock initialHeight={270}>{`// confirm-dialog-provider.tsx
 'use client'
 
 import {
-  ConfirmDialogProvider,
+  ConfirmDialogProvider as BaseConfirmDialogProvider,
   ConfirmOptions
 } from '@omit/react-confirm-dialog'
 
@@ -25,15 +25,15 @@ interface Props {
   defaultOptions?: ConfirmOptions
 }
 
-const ConfirmWrapper = ({ children, defaultOptions }: Props) => {
+export const ConfirmDialogProvider = ({ children, defaultOptions }: Props) => {
   return (
-    <ConfirmDialogProvider defaultOptions={defaultOptions}>
+    <BaseConfirmDialogProvider defaultOptions={defaultOptions}>
       {children}
-    </ConfirmDialogProvider>
+    </BaseConfirmDialogProvider>
   )
 }
 
-export default ConfirmWrapper
+export default ConfirmDialogProvider
 
 // layout.tsx
 export default function RootLayout({
@@ -44,7 +44,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConfirmDialogWrapper>{children}</ConfirmDialogWrapper>
+        <ConfirmDialogProvider>
+          {children}
+          <Analytics />
+        </ConfirmDialogProvider>
       </body>
     </html>
   )
