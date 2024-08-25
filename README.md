@@ -74,7 +74,7 @@ function YourComponent() {
 }
 ```
 
-1. Include the lib classes into your tailwind configuration:
+3. Include the lib classes into your tailwind configuration:
 
 ```js
 module.exports = {
