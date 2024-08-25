@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import ConfirmDialogWrapper from '@/lib/confirm-wrapper'
+import { ConfirmDialogProvider } from '@/lib/confirm-dialog-provider'
+import { Analytics } from '@vercel/analytics/react'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,7 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ConfirmDialogWrapper>{children}</ConfirmDialogWrapper>
+        <ConfirmDialogProvider>
+          {children}
+          <Analytics />
+        </ConfirmDialogProvider>
       </body>
     </html>
   )

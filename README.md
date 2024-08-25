@@ -258,6 +258,11 @@ If you're using Tailwind CSS Intellisense, add the following to your editor sett
 
 This component is built with accessibility in mind, utilizing the `AlertDialog` from `@radix-ui/react-alert-dialog`. It ensures proper focus management and keyboard navigation.
 
+## Other Projects
+
+- [Minimal Tiptap Editor](https://github.com/Aslam97/shadcn-minimal-tiptap)
+- [React Fancy Switch](https://github.com/Aslam97/react-fancy-switch)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
