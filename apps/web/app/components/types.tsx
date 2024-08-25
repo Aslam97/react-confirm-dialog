@@ -171,7 +171,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   confirmText: 'Delete',
   cancelText: 'Cancel',
   cancelButton: {
-    size: 'default,
+    size: 'default',
     variant: 'outline'
   },
   confirmButton: {
