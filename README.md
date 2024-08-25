@@ -1,3 +1,5 @@
+![Minimal Tiptap Editor](https://i.postimg.cc/nV9HDsQy/Screenshot-2024-08-25-at-21-02-29.png)
+
 # React Confirm Dialog
 
 A flexible and customizable confirm dialog component for React applications, built with accessibility in mind. This component makes the [AlertDialog](https://ui.shadcn.com/docs/components/alert-dialog) from Shadcn UI available globally, so it can be used anywhere in your app.
