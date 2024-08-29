@@ -94,14 +94,10 @@ const AlertDialogDescription = React.forwardRef<
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName
 
-export type AlertDialogActionProps = React.ComponentPropsWithoutRef<
-  typeof AlertDialogPrimitive.Action
-> &
-  Partial<Pick<ButtonProps, 'variant' | 'size'>>
-
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  AlertDialogActionProps
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action> &
+    Partial<Pick<ButtonProps, 'variant' | 'size'>>
 >(({ className, variant, size, ...props }, ref) => (
   <AlertDialogPrimitive.Action
     ref={ref}
@@ -111,14 +107,10 @@ const AlertDialogAction = React.forwardRef<
 ))
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
 
-export type AlertDialogCancelProps = React.ComponentPropsWithoutRef<
-  typeof AlertDialogPrimitive.Cancel
-> &
-  Partial<Pick<ButtonProps, 'variant' | 'size'>>
-
 const AlertDialogCancel = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
-  AlertDialogCancelProps
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel> &
+    Partial<Pick<ButtonProps, 'variant' | 'size'>>
 >(({ className, variant, size, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel
     ref={ref}

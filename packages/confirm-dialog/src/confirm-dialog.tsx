@@ -19,16 +19,10 @@ import {
   AlertDialogPortal,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
-import type {
-  AlertDialogCancelProps,
-  AlertDialogActionProps
-} from '@/components/ui/alert-dialog'
 
 export interface ConfirmOptions {
   title?: React.ReactNode
   description?: React.ReactNode
-  confirmButton?: AlertDialogActionProps
-  cancelButton?: AlertDialogCancelProps | null
   confirmText?: string
   cancelText?: string
   icon?: React.ReactNode
@@ -36,14 +30,16 @@ export interface ConfirmOptions {
     onConfirm: () => void,
     onCancel: () => void
   ) => React.ReactNode
-  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
-  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
-  alertDialogHeader?: React.ComponentPropsWithoutRef<typeof AlertDialogHeader>
-  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
-  alertDialogDescription?: React.ComponentPropsWithoutRef<
+  confirmButton?: React.ComponentPropsWithRef<typeof AlertDialogAction>
+  cancelButton?: React.ComponentPropsWithRef<typeof AlertDialogCancel> | null
+  alertDialogOverlay?: React.ComponentPropsWithRef<typeof AlertDialogOverlay>
+  alertDialogContent?: React.ComponentPropsWithRef<typeof AlertDialogContent>
+  alertDialogHeader?: React.ComponentPropsWithRef<typeof AlertDialogHeader>
+  alertDialogTitle?: React.ComponentPropsWithRef<typeof AlertDialogTitle>
+  alertDialogDescription?: React.ComponentPropsWithRef<
     typeof AlertDialogDescription
   >
-  alertDialogFooter?: React.ComponentPropsWithoutRef<typeof AlertDialogFooter>
+  alertDialogFooter?: React.ComponentPropsWithRef<typeof AlertDialogFooter>
 }
 
 export interface ConfirmContextType {
