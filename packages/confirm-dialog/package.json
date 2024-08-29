@@ -1,6 +1,6 @@
 {
   "name": "@omit/react-confirm-dialog",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A simple confirm dialog for React",
   "exports": {
     "types": "./dist/index.d.ts",
@@ -16,9 +16,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src/**/*.ts*",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "lint": "eslint src/**/*.ts*"
   },
   "keywords": [
     "react",
@@ -41,6 +39,7 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@types/react": "^18.3.4",
     "@vercel/style-guide": "^5.2.0",
     "tsup": "^6.7.0",
     "typescript": "^5.5.4"
