@@ -1,5 +1,3 @@
-![React Confirm Dialog](https://i.postimg.cc/yNGM1Pnk/Screenshot-2024-08-25-at-21-05-43.png)
-
 # React Confirm Dialog
 
 A flexible and customizable confirm dialog component for React applications, built with accessibility in mind. This component makes the [AlertDialog](https://ui.shadcn.com/docs/components/alert-dialog) from Shadcn UI available globally, so it can be used anywhere in your app.
@@ -16,7 +14,7 @@ A flexible and customizable confirm dialog component for React applications, bui
 
 ### For Shadcn UI Users
 
-If you are using [Shadcn UI](https://ui.shadcn.com), you can copy the following files:
+If you are using [Shadcn UI](https://ui.shadcn.com), copy the following files:
 
 ```
 - packages/
@@ -27,17 +25,17 @@ If you are using [Shadcn UI](https://ui.shadcn.com), you can copy the following 
       - confirm-dialog.tsx
 ```
 
-### For Non-Shadcn UI Users
+### Via npm
 
-If you're not using Shadcn UI or prefer to install via npm, you can install it using:
+If you're not using Shadcn UI or prefer to install via npm:
 
 ```bash
 npm install @omit/react-confirm-dialog
 ```
 
-## Basic Usage
+## Usage
 
-1. Wrap your app with the `ConfirmDialogProvider`:
+### 1. Wrap your app with the ConfirmDialogProvider
 
 ```jsx
 import { ConfirmDialogProvider } from '@omit/react-confirm-dialog'
@@ -49,7 +47,7 @@ function App() {
 }
 ```
 
-2. Use the `useConfirm` hook in your components:
+### 2. Use the useConfirm hook in your components
 
 ```jsx
 import { useConfirm } from '@omit/react-confirm-dialog'
@@ -74,7 +72,9 @@ function YourComponent() {
 }
 ```
 
-3. Include the lib classes into your tailwind configuration:
+### 3. Update your Tailwind configuration
+
+Add the library classes to your `tailwind.config.js`:
 
 ```js
 module.exports = {
@@ -86,11 +86,11 @@ module.exports = {
 }
 ```
 
-## Non-Shadcn UI Usage
+## Configuration for Non-Shadcn UI Users
 
-If you're not using Shadcn UI, you'll need to set up your Tailwind CSS configuration to work with this component.
+If you're not using Shadcn UI, follow these additional steps:
 
-1. Update your `tailwind.config.js`:
+### 1. Update your tailwind.config.js
 
 ```js
 module.exports = {
@@ -129,7 +129,9 @@ module.exports = {
 }
 ```
 
-2. Add the following CSS variables to your main CSS file (or get your colors from [Shadcn UI](https://ui.shadcn.com/themes)):
+### 2. Add CSS variables
+
+Add these CSS variables to your main CSS file (or get your colors from [Shadcn UI](https://ui.shadcn.com/themes)):
 
 ```css
 @layer base {
@@ -174,7 +176,9 @@ module.exports = {
 
 ## Customization
 
-You can customize the appearance and behavior of the confirm dialog by passing options to the `confirm` function:
+### Custom Dialog Options
+
+You can customize the appearance and behavior of the confirm dialog:
 
 ```jsx
 confirm({
@@ -200,7 +204,7 @@ confirm({
 
 ### Setting Default Options
 
-You can set default options for all confirm dialogs in your app by passing `defaultOptions` to the `ConfirmDialogProvider`:
+Set default options for all confirm dialogs in your app:
 
 ```jsx
 <ConfirmDialogProvider
@@ -214,7 +218,7 @@ You can set default options for all confirm dialogs in your app by passing `defa
 </ConfirmDialogProvider>
 ```
 
-## API
+## API Reference
 
 ### ConfirmOptions
 
@@ -241,26 +245,26 @@ type ConfirmOptions = {
     onConfirm: () => void,
     onCancel: () => void
   ) => React.ReactNode
-  alertDialogOverlay?: React.ComponentPropsWithoutRef<typeof AlertDialogOverlay>
-  alertDialogContent?: React.ComponentPropsWithoutRef<typeof AlertDialogContent>
-  alertDialogHeader?: React.HTMLAttributes<HTMLDivElement>
-  alertDialogTitle?: React.ComponentPropsWithoutRef<typeof AlertDialogTitle>
-  alertDialogDescription?: React.ComponentPropsWithoutRef<
+  alertDialogOverlay?: React.ComponentPropsWithRef<typeof AlertDialogOverlay>
+  alertDialogContent?: React.ComponentPropsWithRef<typeof AlertDialogContent>
+  alertDialogHeader?: React.ComponentPropsWithRef<typeof AlertDialogHeader>
+  alertDialogTitle?: React.ComponentPropsWithRef<typeof AlertDialogTitle>
+  alertDialogDescription?: React.ComponentPropsWithRef<
     typeof AlertDialogDescription
   >
-  alertDialogFooter?: React.HTMLAttributes<HTMLDivElement>
+  alertDialogFooter?: React.ComponentPropsWithRef<typeof AlertDialogFooter>
 }
 ```
 
 ## Tailwind CSS Intellisense
 
-If you're using Tailwind CSS Intellisense, add the following to your editor settings to make the class name completion work for the `className` prop:
+To enable class name completion for the `className` prop, add this to your editor settings:
 
-```diff
+```json
 {
   "tailwindCSS.experimental.classRegex": [
     "class:\\s*?[\"'`]([^\"'`]*).*?,",
-+    "className:\\s*[\"']([^\"']*)[\"']"
+    "className:\\s*[\"']([^\"']*)[\"']"
   ]
 }
 ```
@@ -269,11 +273,11 @@ If you're using Tailwind CSS Intellisense, add the following to your editor sett
 
 This component is built with accessibility in mind, utilizing the `AlertDialog` from `@radix-ui/react-alert-dialog`. It ensures proper focus management and keyboard navigation.
 
-## Other Projects
+## Related Projects
 
 - [Minimal Tiptap Editor](https://github.com/Aslam97/shadcn-minimal-tiptap)
 - [React Fancy Switch](https://github.com/Aslam97/react-fancy-switch)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
