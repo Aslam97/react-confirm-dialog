@@ -260,11 +260,11 @@ type ConfirmOptions = {
 
 To enable class name completion for the `className` prop, add this to your editor settings:
 
-```json
+```diff
 {
   "tailwindCSS.experimental.classRegex": [
     "class:\\s*?[\"'`]([^\"'`]*).*?,",
-    "className:\\s*[\"']([^\"']*)[\"']"
++    "className:\\s*[\"']([^\"']*)[\"']"
   ]
 }
 ```
