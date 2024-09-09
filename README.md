@@ -1,6 +1,6 @@
 # React Confirm Dialog
 
-A flexible and customizable confirm dialog component for React applications, built with accessibility in mind. This component makes the [AlertDialog](https://ui.shadcn.com/docs/components/alert-dialog) from Shadcn UI available globally, so it can be used anywhere in your app.
+A flexible and customizable confirm dialog component for React applications, built with accessibility in mind.
 
 ## Features
 
