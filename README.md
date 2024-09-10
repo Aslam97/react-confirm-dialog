@@ -6,7 +6,6 @@ A flexible and customizable confirm dialog component for React applications, bui
 
 - Easy to use with the `useConfirm` hook
 - Fully customizable appearance and behavior
-- Accessible, built on top of the `AlertDialog` from `@radix-ui/react-alert-dialog`
 - Supports custom actions
 - Seamless integration with Shadcn UI
 
@@ -269,9 +268,6 @@ To enable class name completion for the `className` prop, add this to your edito
 }
 ```
 
-## Accessibility
-
-This component is built with accessibility in mind, utilizing the `AlertDialog` from `@radix-ui/react-alert-dialog`. It ensures proper focus management and keyboard navigation.
 
 ## Related Projects
 
