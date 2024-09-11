@@ -1,5 +1,12 @@
 # React Confirm Dialog
 
+<p style={{ textAlign: 'center' }}>
+<a href="https://github.com/umodoc/editor/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/npm/l/%40omit%2Freact-confirm-dialog" /></a>
+<a href="https://www.npmjs.com/package/@omit/react-confirm-dialog" target="_blank"><img src="https://img.shields.io/npm/v/%40omit%2Freact-confirm-dialog" /></a>
+<a href="https://www.npmjs.com/package/@omit/react-confirm-dialog" target="_blank"><img src="https://img.shields.io/npm/dw/%40omit%2Freact-confirm-dialog" /></a>
+<a href="https://github.com/umodoc/editor/commits" target="_blank"><img src="https://img.shields.io/npm/unpacked-size/%40omit%2Freact-confirm-dialog" /></a>
+</p>
+
 A flexible and customizable confirm dialog component for React applications, built with accessibility in mind.
 
 ## Features
@@ -272,7 +279,7 @@ To enable class name completion for the `className` prop, add this to your edito
 ## Related Projects
 
 - [Minimal Tiptap Editor](https://github.com/Aslam97/shadcn-minimal-tiptap)
-- [React Fancy Switch](https://github.com/Aslam97/react-fancy-switch)
+- [React Fancy Switch](https://github.com/Aslam97/react-confirm-dialog)
 
 ## License
 
