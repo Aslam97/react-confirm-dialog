@@ -279,7 +279,7 @@ To enable class name completion for the `className` prop, add this to your edito
 ## Related Projects
 
 - [Minimal Tiptap Editor](https://github.com/Aslam97/shadcn-minimal-tiptap)
-- [React Fancy Switch](https://github.com/Aslam97/react-confirm-dialog)
+- [React Fancy Switch](https://github.com/Aslam97/react-fancy-switch)
 
 ## License
 
