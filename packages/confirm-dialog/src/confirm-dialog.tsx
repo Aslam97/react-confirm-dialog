@@ -19,6 +19,7 @@ import {
   AlertDialogPortal,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
+import { Input } from '@/components/ui/input'
 
 export interface ConfirmOptions {
   title?: React.ReactNode
@@ -26,6 +27,8 @@ export interface ConfirmOptions {
   confirmText?: string
   cancelText?: string
   icon?: React.ReactNode
+  enableConfirmationText?: string
+  enableConfirmationTextPlaceholder?: string
   customActions?: (
     onConfirm: () => void,
     onCancel: () => void
@@ -69,15 +72,18 @@ const ConfirmDialogContent: React.FC<{
   onConfirm: () => void
   onCancel: () => void
 }> = memo(({ config, onConfirm, onCancel }) => {
+  const [confirmText, setConfirmText] = useState('')
   const {
     title,
     description,
     cancelButton,
     confirmButton,
-    confirmText,
+    confirmText: confirmButtonText,
     cancelText,
     icon,
     customActions,
+    enableConfirmationText,
+    enableConfirmationTextPlaceholder,
     alertDialogOverlay,
     alertDialogContent,
     alertDialogHeader,
@@ -85,6 +91,8 @@ const ConfirmDialogContent: React.FC<{
     alertDialogDescription,
     alertDialogFooter
   } = config
+
+  const isConfirmDisabled = enableConfirmationText ? confirmText !== enableConfirmationText : false
 
   return (
     <AlertDialogPortal>
@@ -102,6 +110,19 @@ const ConfirmDialogContent: React.FC<{
               {description}
             </AlertDialogDescription>
           )}
+          {enableConfirmationText && (
+            <Input
+              value={confirmText}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setConfirmText(e.target.value)
+              }}
+              placeholder={
+                enableConfirmationTextPlaceholder ||
+                `To continue type: "${enableConfirmationText}"`
+              }
+              className="mt-4"
+            />
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter {...alertDialogFooter}>
           {customActions ? (
@@ -113,8 +134,12 @@ const ConfirmDialogContent: React.FC<{
                   {cancelText}
                 </AlertDialogCancel>
               )}
-              <AlertDialogAction onClick={onConfirm} {...confirmButton}>
-                {confirmText}
+              <AlertDialogAction 
+                onClick={onConfirm} 
+                {...confirmButton}
+                disabled={isConfirmDisabled}
+              >
+                {confirmButtonText}
               </AlertDialogAction>
             </>
           )}

@@ -202,6 +202,33 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     }
   },
   {
+    name: 'Text Confirmation',
+    snippet: `await confirm({
+  title: 'Confirm Deletion',
+  description: 'This action is irreversible. Please type "delete" to confirm.',
+  enableConfirmationText: 'delete',
+  enableConfirmationTextPlaceholder:
+    'Type "delete" to enable the confirm button',
+  confirmText: 'Delete Permanently',
+  confirmButton: {
+    className: 'bg-red-500 hover:bg-red-600 text-white'
+  }
+})`,
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+      confirm({
+        title: 'Confirm Deletion',
+        description: 'This action is irreversible. Please type "delete" to confirm.',
+        enableConfirmationText: 'delete',
+        enableConfirmationTextPlaceholder:
+          'Type "delete" to enable the confirm button',
+        confirmText: 'Delete Permanently',
+        confirmButton: {
+          className: 'bg-red-500 hover:bg-red-600 text-white'
+        }
+      })
+    }
+  },
+  {
     name: 'Custom Actions',
     snippet: `await confirm({
   title: 'Custom Actions',
