@@ -18,22 +18,7 @@ A flexible and customizable confirm dialog component for React applications, bui
 
 ## Installation
 
-### For Shadcn UI Users
-
-If you are using [Shadcn UI](https://ui.shadcn.com), copy the following files:
-
-```
-- packages/
-  - confirm-dialog/
-    - src/
-      - components/ui/
-        - alert-dialog.tsx
-      - confirm-dialog.tsx
-```
-
-### Via npm
-
-If you're not using Shadcn UI or prefer to install via npm:
+Install the package from npm:
 
 ```bash
 npm install @omit/react-confirm-dialog
@@ -180,44 +165,80 @@ Add these CSS variables to your main CSS file (or get your colors from [Shadcn U
 }
 ```
 
-## Customization
+## Advanced Usage
 
-### Custom Dialog Options
+### Custom Content Slot
 
-You can customize the appearance and behavior of the confirm dialog:
+You can add additional content between the description and actions:
 
 ```jsx
-confirm({
-  title: 'Custom Dialog',
-  description: 'This is a custom confirm dialog.',
-  confirmText: 'OK',
-  cancelText: 'No, thanks',
-  icon: <CustomIcon />,
-  confirmButton: {
-    variant: 'destructive',
-    size: 'sm'
-  },
-  cancelButton: {
-    variant: 'outline',
-    size: 'sm'
-  },
-  alertDialogContent: {
-    className: 'custom-dialog-content'
-  }
-  // ... other customization options
-})
+handleClick = async () => {
+  const isConfirmed = await confirm({
+    title: 'Custom Content',
+    description: 'This dialog includes custom content.',
+    contentSlot: <CustomComponent />
+  })
+}
 ```
 
-### Setting Default Options
+### Custom Actions
 
-Set default options for all confirm dialogs in your app:
+The library supports custom actions API that provides access to the dialog's configuration:
+
+```jsx
+const handleClick = async () => {
+  const isConfirmed = await confirm({
+    title: 'Custom Actions',
+    customActions: ({ confirm, cancel, config, setConfig }) => (
+      <div>
+        <button
+          onClick={() => {
+            setConfig((prev) => ({ ...prev, title: 'Updated Title' }))
+          }}
+        >
+          Update Title
+        </button>
+        <button onClick={confirm}>Confirm</button>
+        <button onClick={cancel}>Cancel</button>
+      </div>
+    )
+  })
+}
+```
+
+### Dynamic Configuration Updates
+
+You can update the dialog's configuration even after it's opened:
+
+```jsx
+const confirm = useConfirm()
+
+confirm.updateConfig((prev) => ({
+  ...prev,
+  description: 'Updated description'
+}))
+```
+
+### Default Options
+
+You can set default options for all confirm dialogs in your app:
 
 ```jsx
 <ConfirmDialogProvider
   defaultOptions={{
     confirmText: 'Yes',
     cancelText: 'No',
-    alertDialogContent: { className: 'my-default-dialog-class' }
+    confirmButton: {
+      variant: 'destructive',
+      size: 'sm'
+    },
+    cancelButton: {
+      variant: 'outline',
+      size: 'sm'
+    },
+    alertDialogContent: {
+      className: 'sm:max-w-[425px]'
+    }
   }}
 >
   {/* Your app components */}
@@ -231,34 +252,31 @@ Set default options for all confirm dialogs in your app:
 The `confirm` function accepts an options object with the following properties:
 
 ```typescript
-type ConfirmOptions = {
-  title: React.ReactNode
-  description?: React.ReactNode
-  confirmButton?: {
-    // any normal react button props and Shadcn UI Button props
-    size?: 'sm' | 'lg' | 'icon'
-    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  }
-  cancelButton?: {
-    // any normal react button props and Shadcn UI Button props
-    size?: 'sm' | 'lg' | 'icon'
-    variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  } | null // set to null to hide the cancel button
-  confirmText?: string // default: 'Confirm'
-  cancelText?: string // default: 'Cancel'
-  icon?: React.ReactNode
-  customActions?: (
-    onConfirm: () => void,
-    onCancel: () => void
-  ) => React.ReactNode
-  alertDialogOverlay?: React.ComponentPropsWithRef<typeof AlertDialogOverlay>
-  alertDialogContent?: React.ComponentPropsWithRef<typeof AlertDialogContent>
-  alertDialogHeader?: React.ComponentPropsWithRef<typeof AlertDialogHeader>
-  alertDialogTitle?: React.ComponentPropsWithRef<typeof AlertDialogTitle>
-  alertDialogDescription?: React.ComponentPropsWithRef<
-    typeof AlertDialogDescription
-  >
-  alertDialogFooter?: React.ComponentPropsWithRef<typeof AlertDialogFooter>
+interface ConfirmOptions {
+  // Content
+  title?: ReactNode
+  description?: ReactNode
+  contentSlot?: ReactNode
+  icon?: ReactNode
+
+  // Button Text
+  confirmText?: string
+  cancelText?: string
+
+  // Custom Actions
+  customActions?: LegacyCustomActions | EnhancedCustomActions
+
+  // Button Props
+  confirmButton?: ComponentPropsWithRef<typeof AlertDialogAction>
+  cancelButton?: ComponentPropsWithRef<typeof AlertDialogCancel> | null
+
+  // Component Props
+  alertDialogOverlay?: ComponentPropsWithRef<typeof AlertDialogOverlay>
+  alertDialogContent?: ComponentPropsWithRef<typeof AlertDialogContent>
+  alertDialogHeader?: ComponentPropsWithRef<typeof AlertDialogHeader>
+  alertDialogTitle?: ComponentPropsWithRef<typeof AlertDialogTitle>
+  alertDialogDescription?: ComponentPropsWithRef<typeof AlertDialogDescription>
+  alertDialogFooter?: ComponentPropsWithRef<typeof AlertDialogFooter>
 }
 ```
 
@@ -274,7 +292,6 @@ To enable class name completion for the `className` prop, add this to your edito
   ]
 }
 ```
-
 
 ## Related Projects
 

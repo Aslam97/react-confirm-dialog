@@ -3,8 +3,13 @@
 import React from 'react'
 import { CodeBlock } from './code-block'
 import { Button } from './ui/button'
-import { ConfirmOptions, useConfirm } from '@omit/react-confirm-dialog'
+import {
+  ConfirmOptions,
+  CustomActionsProps,
+  useConfirm
+} from '@omit/react-confirm-dialog'
 import { Info, CheckCircle, AlertTriangle, Trash } from 'lucide-react'
+import { DeleteRepository } from './delete-repo-example'
 
 export const Types = () => {
   const confirm = useConfirm()
@@ -24,9 +29,10 @@ export const Types = () => {
           <Button
             variant="outline"
             data-active={activeType.name === type.name}
-            onClick={() => {
+            onClick={async () => {
               if (type?.action) {
-                type.action(confirm)
+                const res = await type.action(confirm)
+                console.log(res)
               }
               setActiveType(type)
             }}
@@ -35,6 +41,11 @@ export const Types = () => {
             {type.name}
           </Button>
         ))}
+
+        <DeleteRepository
+          activeType={activeType}
+          setActiveType={setActiveType}
+        />
       </div>
       <CodeBlock>{activeType.snippet}</CodeBlock>
     </div>
@@ -52,13 +63,11 @@ const result = await confirm({
 })
 
 console.log(result ? 'Confirmed' : 'Canceled')`,
-    action: async (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
-      const result = await confirm({
+    action: async (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
+      confirm({
         title: 'Confirm Action',
         description: 'Are you sure you want to proceed?'
       })
-      console.log(result ? 'Confirmed' : 'Canceled')
-    }
   },
   {
     name: 'Custom Buttons',
@@ -74,7 +83,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     className: 'border-red-500 text-destructive hover:bg-red-50'
   }
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Custom Buttons',
         description: 'This dialog has custom button text and styles.',
@@ -87,7 +96,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           className: 'border-red-500 text-destructive hover:bg-red-50'
         }
       })
-    }
   },
   {
     name: 'With Icon',
@@ -99,7 +107,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     className: 'flex items-center gap-2'
   }
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Information',
         description: 'This is an important message.',
@@ -108,7 +116,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           className: 'flex items-center gap-2'
         }
       })
-    }
   },
   {
     name: 'Success',
@@ -122,7 +129,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     className: 'flex items-center gap-2'
   }
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Success!',
         description: 'Your action was completed successfully.',
@@ -133,7 +140,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           className: 'flex items-center gap-2'
         }
       })
-    }
   },
   {
     name: 'Warning',
@@ -148,7 +154,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     className: 'flex items-center gap-2'
   }
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Warning',
         description: 'This action may have consequences.',
@@ -160,7 +166,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           className: 'flex items-center gap-2'
         }
       })
-    }
   },
   {
     name: 'Delete',
@@ -181,7 +186,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     className: 'flex items-center gap-2'
   }
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Delete Item',
         description: 'Are you sure? This action cannot be undone.',
@@ -199,7 +204,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           className: 'flex items-center gap-2'
         }
       })
-    }
   },
   {
     name: 'Custom Actions',
@@ -226,22 +230,22 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
     </>
   )
 })`,
-    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => {
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Custom Actions',
         description: 'This dialog has custom action buttons.',
-        customActions: (onConfirm, onCancel) => (
+        customActions: ({ confirm, cancel }: CustomActionsProps) => (
           <>
-            <Button onClick={onCancel} variant="outline">
+            <Button onClick={cancel} variant="outline">
               No, thanks
             </Button>
-            <Button onClick={onConfirm} variant="default">
+            <Button onClick={confirm} variant="default">
               Yes, please
             </Button>
             <Button
               onClick={() => {
                 console.log('Custom action')
-                onCancel()
+                confirm()
               }}
               variant="secondary"
             >
@@ -250,7 +254,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
           </>
         )
       })
-    }
   },
   {
     name: 'Custom Styling',
