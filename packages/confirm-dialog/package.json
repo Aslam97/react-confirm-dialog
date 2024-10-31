@@ -1,6 +1,6 @@
 {
   "name": "@omit/react-confirm-dialog",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A simple confirm dialog for React",
   "exports": {
     "types": "./dist/index.d.ts",
