@@ -18,7 +18,7 @@
     "strict": true,
     "strictNullChecks": true,
 
-    "lib": ["ES2015", "DOM"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "target": "ES6",
     "jsx": "react-jsx",
