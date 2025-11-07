@@ -1,6 +1,6 @@
 {
   "name": "@omit/react-confirm-dialog",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "description": "A simple confirm dialog for React",
   "exports": {
     "types": "./dist/index.d.ts",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
-    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.6.0"
