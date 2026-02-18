@@ -312,7 +312,10 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   description: 'This action cannot be undone.',
   cancelButton: null,
   confirmText: 'Yes, do it',
-  alertDialogContent: { size: 'sm' }
+  alertDialogContent: { size: 'sm' },
+  alertDialogFooter: {
+    className: 'group-data-[size=sm]/alert-dialog-content:grid-cols-1'
+  }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
