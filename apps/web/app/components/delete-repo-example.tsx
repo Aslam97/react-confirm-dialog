@@ -42,9 +42,6 @@ const DeleteConfirmContent: React.FC<DeleteConfirmContentProps> = ({
 const getConfirmationConfig = (onValueChange: (disabled: boolean) => void) => ({
   icon: <Trash2 className="size-4 text-destructive" />,
   title: 'Delete Repository',
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  },
   description: (
     <span>
       This action cannot be undone. This will permanently delete{' '}
@@ -148,9 +145,6 @@ const DeleteConfirmContent: React.FC<DeleteConfirmContentProps> = ({
 const getConfirmationConfig = (onValueChange: (disabled: boolean) => void) => ({
   icon: <Trash2 className="size-4 text-destructive" />,
   title: 'Delete Repository',
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  },
   description: (
     <span>
       This action cannot be undone. This will permanently delete{' '}

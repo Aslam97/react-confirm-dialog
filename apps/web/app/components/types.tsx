@@ -103,18 +103,12 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   title: 'Information',
   description: 'This is an important message.',
   icon: <Info className="size-4 text-blue-500" />,
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Information',
         description: 'This is an important message.',
-        icon: <Info className="size-4 text-blue-500" />,
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
-        }
+        icon: <Info className="size-4 text-blue-500" />
       })
   },
   {
@@ -125,9 +119,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   icon: <CheckCircle className="size-4 text-green-500" />,
   confirmText: 'Great',
   cancelButton: null, // Hide cancel button
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
@@ -135,10 +126,7 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
         description: 'Your action was completed successfully.',
         icon: <CheckCircle className="size-4 text-green-500" />,
         confirmText: 'Great',
-        cancelButton: null, // Hide cancel button
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
-        }
+        cancelButton: null // Hide cancel button
       })
   },
   {
@@ -150,9 +138,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   confirmButton: {
     className: 'bg-yellow-500 hover:bg-yellow-600 text-white'
   },
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
@@ -161,9 +146,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
         icon: <AlertTriangle className="size-4 text-yellow-500" />,
         confirmButton: {
           className: 'bg-yellow-500 hover:bg-yellow-600 text-white'
-        },
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
         }
       })
   },
@@ -182,9 +164,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
   confirmButton: {
     className: 'bg-red-500 hover:bg-red-600 text-white'
   },
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
@@ -199,9 +178,6 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
         },
         confirmButton: {
           className: 'bg-red-500 hover:bg-red-600 text-white'
-        },
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
         }
       })
   },

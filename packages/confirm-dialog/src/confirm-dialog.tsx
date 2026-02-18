@@ -15,6 +15,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogMedia,
   AlertDialogOverlay,
   AlertDialogPortal,
   AlertDialogTitle
@@ -51,6 +52,7 @@ export interface ConfirmOptions {
   alertDialogOverlay?: ComponentPropsWithRef<typeof AlertDialogOverlay>
   alertDialogContent?: ComponentPropsWithRef<typeof AlertDialogContent>
   alertDialogHeader?: ComponentPropsWithRef<typeof AlertDialogHeader>
+  alertDialogMedia?: ComponentPropsWithRef<typeof AlertDialogMedia>
   alertDialogTitle?: ComponentPropsWithRef<typeof AlertDialogTitle>
   alertDialogDescription?: ComponentPropsWithRef<typeof AlertDialogDescription>
   alertDialogFooter?: ComponentPropsWithRef<typeof AlertDialogFooter>
@@ -85,6 +87,7 @@ const baseDefaultOptions: ConfirmOptions = {
   cancelButton: {},
   alertDialogContent: {},
   alertDialogHeader: {},
+  alertDialogMedia: {},
   alertDialogTitle: {},
   alertDialogDescription: {},
   alertDialogFooter: {}
@@ -117,6 +120,7 @@ const ConfirmDialogContent: React.FC<{
     alertDialogOverlay,
     alertDialogContent,
     alertDialogHeader,
+    alertDialogMedia,
     alertDialogTitle,
     alertDialogDescription,
     alertDialogFooter
@@ -157,7 +161,6 @@ const ConfirmDialogContent: React.FC<{
 
     return (
       <AlertDialogTitle {...alertDialogTitle}>
-        {icon}
         {title}
       </AlertDialogTitle>
     )
@@ -168,6 +171,11 @@ const ConfirmDialogContent: React.FC<{
       <AlertDialogOverlay {...alertDialogOverlay} />
       <AlertDialogContent {...alertDialogContent}>
         <AlertDialogHeader {...alertDialogHeader}>
+          {icon && (
+            <AlertDialogMedia {...alertDialogMedia}>
+              {icon}
+            </AlertDialogMedia>
+          )}
           {renderTitle()}
           {description && (
             <AlertDialogDescription {...alertDialogDescription}>
