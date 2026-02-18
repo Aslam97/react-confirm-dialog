@@ -1,30 +1,31 @@
 # React Confirm Dialog
 
 <p style={{ textAlign: 'center' }}>
-<a href="https://github.com/umodoc/editor/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/npm/l/%40omit%2Freact-confirm-dialog" /></a>
+<a href="https://github.com/Aslam97/react-confirm-dialog/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/npm/l/%40omit%2Freact-confirm-dialog" /></a>
 <a href="https://www.npmjs.com/package/@omit/react-confirm-dialog" target="_blank"><img src="https://img.shields.io/npm/v/%40omit%2Freact-confirm-dialog" /></a>
 <a href="https://www.npmjs.com/package/@omit/react-confirm-dialog" target="_blank"><img src="https://img.shields.io/npm/dw/%40omit%2Freact-confirm-dialog" /></a>
-<a href="https://github.com/umodoc/editor/commits" target="_blank"><img src="https://img.shields.io/npm/unpacked-size/%40omit%2Freact-confirm-dialog" /></a>
+<a href="https://github.com/Aslam97/react-confirm-dialog/commits" target="_blank"><img src="https://img.shields.io/npm/unpacked-size/%40omit%2Freact-confirm-dialog" /></a>
 </p>
 
-A flexible and customizable confirm dialog component for React applications, built with accessibility in mind.
+A flexible and customizable confirm dialog component for React applications. Built on top of [Radix UI](https://www.radix-ui.com/) Alert Dialog and styled with [Tailwind CSS v4](https://tailwindcss.com/).
 
 ## Features
 
-- Easy to use with the `useConfirm` hook
-- Fully customizable appearance and behavior
-- Supports custom actions
-- Seamless integration with Shadcn UI
+- Promise-based API with the `useConfirm` hook
+- Fully customizable appearance through Tailwind classes
+- Custom actions with access to dialog state
+- Icon support and content slots
+- Accessible by default (built on Radix UI)
+- Tailwind CSS v4 with native keyframe animations
+- React 18 and 19 support
 
 ## Installation
-
-Install the package from npm:
 
 ```bash
 npm install @omit/react-confirm-dialog
 ```
 
-## Usage
+## Setup
 
 ### 1. Wrap your app with the ConfirmDialogProvider
 
@@ -33,12 +34,86 @@ import { ConfirmDialogProvider } from '@omit/react-confirm-dialog'
 
 function App() {
   return (
-    <ConfirmDialogProvider>{/* Your app components */}</ConfirmDialogProvider>
+    <ConfirmDialogProvider>
+      {/* Your app components */}
+    </ConfirmDialogProvider>
   )
 }
 ```
 
-### 2. Use the useConfirm hook in your components
+### 2. Configure Tailwind CSS v4
+
+Add the library's class source and the required animation keyframes to your CSS file:
+
+```css
+@import 'tailwindcss';
+@source '../node_modules/@omit/react-confirm-dialog/dist/index.js';
+
+@theme inline {
+  --animate-fade-in: fade-in 150ms ease;
+  --animate-fade-out: fade-out 150ms ease;
+  --animate-scale-in: scale-in 150ms ease;
+  --animate-scale-out: scale-out 150ms ease;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; scale: 0.95; }
+  }
+  @keyframes scale-out {
+    to { opacity: 0; scale: 0.95; }
+  }
+}
+```
+
+### 3. Add CSS color variables
+
+The dialog uses Tailwind semantic color tokens. Define them in your CSS (or use colors from [shadcn/ui themes](https://ui.shadcn.com/themes)):
+
+```css
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+```
+
+## Usage
+
+### Basic
 
 ```jsx
 import { useConfirm } from '@omit/react-confirm-dialog'
@@ -48,180 +123,138 @@ function YourComponent() {
 
   const handleClick = async () => {
     const isConfirmed = await confirm({
-      title: 'Delete Item',
-      description: 'Are you sure you want to delete this item?',
-      confirmText: 'Delete',
-      cancelText: 'Cancel'
+      title: 'Confirm Action',
+      description: 'Are you sure you want to proceed?'
     })
 
     if (isConfirmed) {
-      // Perform delete action
+      // User confirmed
     }
   }
 
-  return <button onClick={handleClick}>Delete</button>
+  return <button onClick={handleClick}>Do something</button>
 }
 ```
 
-### 3. Update your Tailwind configuration
+### With Icon
 
-Add the library classes to your `tailwind.config.js`:
+```jsx
+import { Trash } from 'lucide-react'
 
-```js
-module.exports = {
-  content: [
-    './node_modules/@omit/react-confirm-dialog/dist/index.js'
-    // ... your other content paths
-  ]
-  // ... other configurations
-}
-```
-
-## Configuration for Non-Shadcn UI Users
-
-If you're not using Shadcn UI, follow these additional steps:
-
-### 1. Update your tailwind.config.js
-
-```js
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
-        }
-      }
-    }
+const isConfirmed = await confirm({
+  title: 'Delete Item',
+  description: 'Are you sure? This action cannot be undone.',
+  icon: <Trash className="size-4 text-destructive" />,
+  confirmText: 'Delete',
+  cancelText: 'Cancel',
+  confirmButton: {
+    className: 'bg-red-500 hover:bg-red-600 text-white'
   },
-  plugins: [require('tailwindcss-animate')]
-}
+  alertDialogTitle: {
+    className: 'flex items-center gap-2'
+  }
+})
 ```
 
-### 2. Add CSS variables
+### Custom Button Text and Styles
 
-Add these CSS variables to your main CSS file (or get your colors from [Shadcn UI](https://ui.shadcn.com/themes)):
-
-```css
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+```jsx
+const isConfirmed = await confirm({
+  title: 'Custom Buttons',
+  description: 'This dialog has custom button text and styles.',
+  confirmText: 'Proceed',
+  cancelText: 'Go Back',
+  confirmButton: {
+    className: 'bg-green-500 hover:bg-green-600 text-white'
+  },
+  cancelButton: {
+    className: 'border-red-500 text-destructive hover:bg-red-50'
   }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
-}
+})
 ```
 
-## Advanced Usage
+### Hide Cancel Button
+
+```jsx
+const isConfirmed = await confirm({
+  title: 'Success!',
+  description: 'Your action was completed successfully.',
+  confirmText: 'Great',
+  cancelButton: null
+})
+```
 
 ### Custom Content Slot
 
-You can add additional content between the description and actions:
+Add custom content between the description and actions:
 
 ```jsx
-handleClick = async () => {
-  const isConfirmed = await confirm({
-    title: 'Custom Content',
-    description: 'This dialog includes custom content.',
-    contentSlot: <CustomComponent />
-  })
-}
+const isConfirmed = await confirm({
+  title: 'Custom Content',
+  description: 'This dialog includes custom content.',
+  contentSlot: <MyCustomComponent />
+})
 ```
 
 ### Custom Actions
 
-The library supports custom actions API that provides access to the dialog's configuration:
+Full control over the action buttons with access to dialog state:
 
 ```jsx
-const handleClick = async () => {
-  const isConfirmed = await confirm({
-    title: 'Custom Actions',
-    customActions: ({ confirm, cancel, config, setConfig }) => (
-      <div>
-        <button
-          onClick={() => {
-            setConfig((prev) => ({ ...prev, title: 'Updated Title' }))
-          }}
-        >
-          Update Title
-        </button>
-        <button onClick={confirm}>Confirm</button>
-        <button onClick={cancel}>Cancel</button>
-      </div>
-    )
-  })
-}
+const isConfirmed = await confirm({
+  title: 'Custom Actions',
+  description: 'This dialog has custom action buttons.',
+  customActions: ({ confirm, cancel, config, setConfig }) => (
+    <>
+      <button onClick={cancel}>No, thanks</button>
+      <button onClick={confirm}>Yes, please</button>
+      <button
+        onClick={() => {
+          console.log('Custom action')
+          cancel()
+        }}
+      >
+        Maybe later
+      </button>
+    </>
+  )
+})
+```
+
+### Custom Styling
+
+Override the styling of any dialog part:
+
+```jsx
+const isConfirmed = await confirm({
+  title: 'Custom Styling',
+  description: 'This dialog has custom styles applied.',
+  alertDialogContent: { className: 'border-2 border-indigo-500 bg-indigo-50' },
+  alertDialogHeader: { className: 'bg-indigo-100' },
+  alertDialogFooter: { className: 'bg-indigo-100' },
+  alertDialogTitle: { className: 'text-indigo-700' },
+  alertDialogDescription: { className: 'text-indigo-600' }
+})
 ```
 
 ### Dynamic Configuration Updates
 
-You can update the dialog's configuration even after it's opened:
+Update the dialog configuration after it's opened:
 
 ```jsx
 const confirm = useConfirm()
 
+// Inside a custom action or content slot
 confirm.updateConfig((prev) => ({
   ...prev,
-  description: 'Updated description'
+  description: 'Updated description',
+  confirmButton: { ...prev.confirmButton, disabled: true }
 }))
 ```
 
 ### Default Options
 
-You can set default options for all confirm dialogs in your app:
+Set default options for all confirm dialogs in your app:
 
 ```jsx
 <ConfirmDialogProvider
@@ -266,11 +299,11 @@ interface ConfirmOptions {
   // Custom Actions
   customActions?: LegacyCustomActions | EnhancedCustomActions
 
-  // Button Props
+  // Button Props (pass null to cancelButton to hide it)
   confirmButton?: ComponentPropsWithRef<typeof AlertDialogAction>
   cancelButton?: ComponentPropsWithRef<typeof AlertDialogCancel> | null
 
-  // Component Props
+  // Component Props (className and other HTML props)
   alertDialogOverlay?: ComponentPropsWithRef<typeof AlertDialogOverlay>
   alertDialogContent?: ComponentPropsWithRef<typeof AlertDialogContent>
   alertDialogHeader?: ComponentPropsWithRef<typeof AlertDialogHeader>
@@ -280,15 +313,66 @@ interface ConfirmOptions {
 }
 ```
 
+### CustomActionsProps
+
+When using the enhanced custom actions API:
+
+```typescript
+interface CustomActionsProps {
+  confirm: () => void
+  cancel: () => void
+  config: ConfirmOptions
+  setConfig: (config: ConfirmOptions | ((prev: ConfirmOptions) => ConfirmOptions)) => void
+}
+```
+
+### useConfirm
+
+```typescript
+const confirm = useConfirm()
+
+// Open a dialog (returns a promise)
+const result: boolean = await confirm(options)
+
+// Update config of an open dialog
+confirm.updateConfig((prev) => ({ ...prev, title: 'New Title' }))
+```
+
+## Migrating from v1
+
+### Tailwind CSS v4
+
+v2 uses Tailwind CSS v4. Replace your `tailwind.config.js` content configuration with the `@source` directive in your CSS file:
+
+```diff
+- // tailwind.config.js
+- module.exports = {
+-   content: ['./node_modules/@omit/react-confirm-dialog/dist/index.js'],
+-   plugins: [require('tailwindcss-animate')]
+- }
+
++ /* globals.css */
++ @import 'tailwindcss';
++ @source '../node_modules/@omit/react-confirm-dialog/dist/index.js';
+```
+
+### Animation keyframes
+
+v2 uses native Tailwind CSS v4 `@theme` keyframes instead of `tailwindcss-animate` or `tw-animate-css`. Add the keyframe definitions shown in the [Setup](#2-configure-tailwind-css-v4) section to your CSS file.
+
+### CSS color variables
+
+v2 uses `oklch` color space instead of `hsl`. Update your CSS variables accordingly, or use colors from [shadcn/ui themes](https://ui.shadcn.com/themes).
+
 ## Tailwind CSS Intellisense
 
 To enable class name completion for the `className` prop, add this to your editor settings:
 
-```diff
+```json
 {
   "tailwindCSS.experimental.classRegex": [
     "class:\\s*?[\"'`]([^\"'`]*).*?,",
-+    "className:\\s*[\"']([^\"']*)[\"']"
+    "className:\\s*[\"']([^\"']*)[\"']"
   ]
 }
 ```
