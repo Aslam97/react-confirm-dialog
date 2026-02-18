@@ -9,9 +9,6 @@
 
 A flexible and customizable confirm dialog component for React applications, built with accessibility in mind.
 
-> **Note**: There are currently no online previews or demos available for this project.  
-> In the meantime, please clone the repository and try it out locally.
-
 ## Features
 
 - Easy to use with the `useConfirm` hook
