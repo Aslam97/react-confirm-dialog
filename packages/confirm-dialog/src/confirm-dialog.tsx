@@ -17,7 +17,8 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   AlertDialogPortal,
-  AlertDialogTitle
+  AlertDialogTitle,
+  AlertDialogMedia
 } from '@/components/ui/alert-dialog'
 
 export interface CustomActionsProps {
@@ -45,6 +46,7 @@ export interface ConfirmOptions {
   confirmText?: string
   cancelText?: string
   icon?: ReactNode
+  media?: ReactNode
   customActions?: LegacyCustomActions | EnhancedCustomActions
   confirmButton?: ComponentPropsWithRef<typeof AlertDialogAction>
   cancelButton?: ComponentPropsWithRef<typeof AlertDialogCancel> | null
@@ -52,6 +54,7 @@ export interface ConfirmOptions {
   alertDialogContent?: ComponentPropsWithRef<typeof AlertDialogContent>
   alertDialogHeader?: ComponentPropsWithRef<typeof AlertDialogHeader>
   alertDialogTitle?: ComponentPropsWithRef<typeof AlertDialogTitle>
+  alertDialogMedia?: ComponentPropsWithRef<typeof AlertDialogMedia>
   alertDialogDescription?: ComponentPropsWithRef<typeof AlertDialogDescription>
   alertDialogFooter?: ComponentPropsWithRef<typeof AlertDialogFooter>
 }
@@ -86,6 +89,7 @@ const baseDefaultOptions: ConfirmOptions = {
   alertDialogContent: {},
   alertDialogHeader: {},
   alertDialogTitle: {},
+  alertDialogMedia: {},
   alertDialogDescription: {},
   alertDialogFooter: {}
 }
@@ -112,12 +116,14 @@ const ConfirmDialogContent: React.FC<{
     confirmText,
     cancelText,
     icon,
+    media,
     contentSlot,
     customActions,
     alertDialogOverlay,
     alertDialogContent,
     alertDialogHeader,
     alertDialogTitle,
+    alertDialogMedia,
     alertDialogDescription,
     alertDialogFooter
   } = config
@@ -168,6 +174,9 @@ const ConfirmDialogContent: React.FC<{
       <AlertDialogOverlay {...alertDialogOverlay} />
       <AlertDialogContent {...alertDialogContent}>
         <AlertDialogHeader {...alertDialogHeader}>
+          {media && (
+            <AlertDialogMedia {...alertDialogMedia}>{media}</AlertDialogMedia>
+          )}
           {renderTitle()}
           {description && (
             <AlertDialogDescription {...alertDialogDescription}>

@@ -8,8 +8,11 @@ import {
   CustomActionsProps,
   useConfirm
 } from '@omit/react-confirm-dialog'
-import { Info, CheckCircle, AlertTriangle, Trash } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { DeleteRepository } from './delete-repo-example'
+import { CircleFadingPlusIcon } from 'lucide-react'
+import { BluetoothIcon } from 'lucide-react'
+import { Trash2Icon } from 'lucide-react'
 
 export const Types = () => {
   const confirm = useConfirm()
@@ -17,13 +20,13 @@ export const Types = () => {
 
   return (
     <div className="space-y-3">
-      <span>
+      <div className="mb-4">
         <h2 className="text-base font-medium">Confirm Dialog Types</h2>
         <p className="text-sm">
           Explore various customization options for the confirm dialog. Click on
           each type to see it in action and view the corresponding code.
         </p>
-      </span>
+      </div>
       <div className="flex items-center gap-2 flex-wrap">
         {allTypes.map((type) => (
           <Button
@@ -59,86 +62,76 @@ const allTypes = [
 
 const result = await confirm({
   title: 'Confirm Action',
-  description: 'Are you sure you want to proceed?',
+  description: 'This action cannot be undone. This will permanently delete your account from our servers.',
 })
 
 console.log(result ? 'Confirmed' : 'Canceled')`,
     action: async (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
         title: 'Confirm Action',
-        description: 'Are you sure you want to proceed?'
+        description:
+          'This action cannot be undone. This will permanently delete your account from our servers.'
       })
   },
   {
-    name: 'Custom Buttons',
+    name: 'Small',
     snippet: `await confirm({
-  title: 'Custom Buttons',
-  description: 'This dialog has custom button text and styles.',
-  confirmText: 'Proceed',
-  cancelText: 'Go Back',
-  confirmButton: {
-    className: 'bg-green-500 hover:bg-green-600 text-white'
-  },
-  cancelButton: {
-    className: 'border-red-500 text-destructive hover:bg-red-50'
-  }
+  title: 'Allow accessory to connect?',
+  description: 'Do you want to allow the USB accessory to connect to this device?',
+  confirmText: 'Allow',
+  cancelText: 'Don\'t Allow',
+  alertDialogContent: { size: 'sm' }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
-        title: 'Custom Buttons',
-        description: 'This dialog has custom button text and styles.',
-        confirmText: 'Proceed',
-        cancelText: 'Go Back',
-        confirmButton: {
-          className: 'bg-green-500 hover:bg-green-600 text-white'
-        },
-        cancelButton: {
-          className: 'border-red-500 text-destructive hover:bg-red-50'
-        }
+        title: 'Allow accessory to connect?',
+        description:
+          'Do you want to allow the USB accessory to connect to this device?',
+        confirmText: 'Allow',
+        cancelText: "Don't Allow",
+        alertDialogContent: { size: 'sm' }
       })
   },
   {
-    name: 'With Icon',
+    name: 'Media',
     snippet: `await confirm({
-  title: 'Information',
-  description: 'This is an important message.',
-  icon: <Info className="size-4 text-blue-500" />,
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
+    title: 'Share this project?',
+    description:
+      'Anyone with the link will be able to view and edit this project.',
+    media: <CircleFadingPlusIcon />,
+    confirmText: 'Share',
+    cancelText: 'Cancel'
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
-        title: 'Information',
-        description: 'This is an important message.',
-        icon: <Info className="size-4 text-blue-500" />,
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
-        }
+        title: 'Share this project?',
+        description:
+          'Anyone with the link will be able to view and edit this project.',
+        media: <CircleFadingPlusIcon />,
+        confirmText: 'Share',
+        cancelText: 'Cancel'
       })
   },
   {
-    name: 'Success',
+    name: 'Small with Media',
     snippet: `await confirm({
-  title: 'Success!',
-  description: 'Your action was completed successfully.',
-  icon: <CheckCircle className="size-4 text-green-500" />,
-  confirmText: 'Great',
-  cancelButton: null, // Hide cancel button
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
-  }
+  title: 'Allow accessory to connect?',
+  description:
+    'Do you want to allow the USB accessory to connect to this device?',
+  media: <BluetoothIcon />,
+  confirmText: 'Allow',
+  cancelText: "Don't Allow",
+  alertDialogContent: { size: 'sm' }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
-        title: 'Success!',
-        description: 'Your action was completed successfully.',
-        icon: <CheckCircle className="size-4 text-green-500" />,
-        confirmText: 'Great',
-        cancelButton: null, // Hide cancel button
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
-        }
+        title: 'Allow accessory to connect?',
+        description:
+          'Do you want to allow the USB accessory to connect to this device?',
+        media: <BluetoothIcon />,
+        confirmText: 'Allow',
+        cancelText: "Don't Allow",
+        alertDialogContent: { size: 'sm' }
       })
   },
   {
@@ -168,40 +161,54 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
       })
   },
   {
-    name: 'Delete',
+    name: 'Destructive',
     snippet: `await confirm({
-  title: 'Delete Item',
-  description: 'Are you sure? This action cannot be undone.',
-  icon: <Trash className="size-4 text-destructive" />,
+  title: 'Delete Chat',
+  description: (
+    <span>
+      This will permanently delete this chat conversation. View{' '}
+      <a href="#">Settings</a> to delete any memories saved during this
+      chat.
+    </span>
+  ),
+  media: <Trash2Icon />,
   confirmText: 'Delete',
   cancelText: 'Cancel',
   cancelButton: {
-    size: 'default',
     variant: 'outline'
   },
   confirmButton: {
-    className: 'bg-red-500 hover:bg-red-600 text-white'
+    variant: 'destructive'
   },
-  alertDialogTitle: {
-    className: 'flex items-center gap-2'
+  alertDialogContent: { size: 'sm' },
+  alertDialogMedia: {
+    className:
+      'bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive'
   }
 })`,
     action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
       confirm({
-        title: 'Delete Item',
-        description: 'Are you sure? This action cannot be undone.',
-        icon: <Trash className="size-4 text-destructive" />,
+        title: 'Delete Chat',
+        description: (
+          <span>
+            This will permanently delete this chat conversation. View{' '}
+            <a href="#">Settings</a> to delete any memories saved during this
+            chat.
+          </span>
+        ),
+        media: <Trash2Icon />,
         confirmText: 'Delete',
         cancelText: 'Cancel',
         cancelButton: {
-          size: 'default',
           variant: 'outline'
         },
         confirmButton: {
-          className: 'bg-red-500 hover:bg-red-600 text-white'
+          variant: 'destructive'
         },
-        alertDialogTitle: {
-          className: 'flex items-center gap-2'
+        alertDialogContent: { size: 'sm' },
+        alertDialogMedia: {
+          className:
+            'bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive'
         }
       })
   },
@@ -279,5 +286,44 @@ console.log(result ? 'Confirmed' : 'Canceled')`,
         alertDialogDescription: { className: 'text-indigo-600' }
       })
     }
+  },
+  // Without cancel button
+  {
+    name: 'No Cancel Button',
+    snippet: `await confirm({
+  title: 'Are you sure?',
+  description: 'This action cannot be undone.',
+  cancelButton: null,
+  confirmText: 'Yes, do it'
+})`,
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
+      confirm({
+        title: 'Are you sure?',
+        description: 'This action cannot be undone.',
+        cancelButton: null,
+        confirmText: 'Yes, do it'
+      })
+  },
+  // Without cancel button and small size
+  {
+    name: 'No Cancel Button + Small',
+    snippet: `await confirm({
+  title: 'Are you sure?',
+  description: 'This action cannot be undone.',
+  cancelButton: null,
+  confirmText: 'Yes, do it',
+  alertDialogContent: { size: 'sm' }
+})`,
+    action: (confirm: (options: ConfirmOptions) => Promise<boolean>) =>
+      confirm({
+        title: 'Are you sure?',
+        description: 'This action cannot be undone.',
+        cancelButton: null,
+        confirmText: 'Yes, do it',
+        alertDialogContent: { size: 'sm' },
+        alertDialogFooter: {
+          className: 'group-data-[size=sm]/alert-dialog-content:grid-cols-1'
+        }
+      })
   }
 ]

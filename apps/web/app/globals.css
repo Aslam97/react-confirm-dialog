@@ -47,16 +47,26 @@
   --animate-scale-out: scale-out 150ms ease;
 
   @keyframes fade-in {
-    from { opacity: 0; }
+    from {
+      opacity: 0;
+    }
   }
   @keyframes fade-out {
-    to { opacity: 0; }
+    to {
+      opacity: 0;
+    }
   }
   @keyframes scale-in {
-    from { opacity: 0; scale: 0.95; }
+    from {
+      opacity: 0;
+      scale: 0.95;
+    }
   }
   @keyframes scale-out {
-    to { opacity: 0; scale: 0.95; }
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
   }
 }
 
