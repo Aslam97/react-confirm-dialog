@@ -1,6 +1,7 @@
 name: Release
 
-# Publishes @omit/react-confirm-dialog to npm when a version tag is pushed.
+# Publishes @omit/react-confirm-dialog to npm when a version tag is pushed
+# (v2.1.0 publishes to `latest`, v2.1.0-rc.1 publishes to `next`).
 # Authentication uses npm trusted publishing (OIDC): configure this workflow
 # file (release.yml) as a trusted publisher for the package on npmjs.com.
 # Provenance attestations are generated automatically by npm.
@@ -49,6 +50,14 @@ jobs:
       - run: pnpm test
       - run: pnpm check-package
 
+      # Prerelease versions (2.1.0-rc.1, 2.1.0-beta.0, ...) go to the `next`
+      # dist-tag so that `npm install @omit/react-confirm-dialog` keeps
+      # resolving to the last stable release until the final version is tagged.
       - name: Publish to npm
         working-directory: packages/confirm-dialog
-        run: npm publish
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          case "$version" in
+            *-*) npm publish --tag next ;;
+            *) npm publish ;;
+          esac
