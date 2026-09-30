@@ -1,3 +1,11 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
+
+# Lifecycle scripts of these dependencies are intentionally not executed
+# (pnpm 10 default). All three ship prebuilt binaries as optional dependencies
+# and work without their postinstall step.
+ignoredBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

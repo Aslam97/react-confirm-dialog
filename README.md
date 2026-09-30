@@ -15,9 +15,10 @@ A flexible and customizable confirm dialog component for React applications. Bui
 - Fully customizable appearance through Tailwind classes
 - Custom actions with access to dialog state
 - Icon support and content slots
-- Accessible by default (built on Radix UI)
+- Accessible by default (built on Radix UI): focus is trapped and always lands inside the dialog, `Escape` cancels, clicking the overlay does not dismiss
 - Tailwind CSS v4 with native keyframe animations
-- React 18 and 19 support
+- React 18 and 19 support (tested against both)
+- Ships ESM and CommonJS builds with type declarations and the `'use client'` directive, so the provider can be rendered directly from a React Server Component
 
 ## Installation
 
@@ -34,12 +35,12 @@ import { ConfirmDialogProvider } from '@omit/react-confirm-dialog'
 
 function App() {
   return (
-    <ConfirmDialogProvider>
-      {/* Your app components */}
-    </ConfirmDialogProvider>
+    <ConfirmDialogProvider>{/* Your app components */}</ConfirmDialogProvider>
   )
 }
 ```
+
+The package is a client module, so in the Next.js App Router the provider can be rendered straight from `app/layout.tsx` without a `'use client'` wrapper of your own.
 
 ### 2. Configure Tailwind CSS v4
 
@@ -56,16 +57,26 @@ Add the library's class source and the required animation keyframes to your CSS 
   --animate-scale-out: scale-out 150ms ease;
 
   @keyframes fade-in {
-    from { opacity: 0; }
+    from {
+      opacity: 0;
+    }
   }
   @keyframes fade-out {
-    to { opacity: 0; }
+    to {
+      opacity: 0;
+    }
   }
   @keyframes scale-in {
-    from { opacity: 0; scale: 0.95; }
+    from {
+      opacity: 0;
+      scale: 0.95;
+    }
   }
   @keyframes scale-out {
-    to { opacity: 0; scale: 0.95; }
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
   }
 }
 ```
@@ -136,6 +147,10 @@ function YourComponent() {
 }
 ```
 
+Always pass a `title`: it is the accessible name of the dialog. A `description` is strongly recommended as well; when it is omitted the dialog simply has no `aria-describedby`.
+
+The promise resolves to `true` when the user confirms and to `false` when the dialog is cancelled, dismissed with `Escape`, or replaced by another `confirm()` call before it was answered.
+
 ### With Icon
 
 ```jsx
@@ -173,6 +188,23 @@ const isConfirmed = await confirm({
 })
 ```
 
+### Button Props
+
+`confirmButton` and `cancelButton` accept every prop of the underlying button, including `ref`, `disabled`, `variant` (`default`, `outline`, `secondary`, `ghost`, `destructive`, `link`) and `size`. A custom `onClick` runs before the dialog settles the promise; call `event.preventDefault()` in it to keep the dialog open.
+
+```jsx
+const isConfirmed = await confirm({
+  title: 'Submit form?',
+  description: 'Your answers will be sent.',
+  confirmButton: {
+    variant: 'destructive',
+    onClick: (event) => {
+      if (!isValid) event.preventDefault() // stays open, promise stays pending
+    }
+  }
+})
+```
+
 ### Hide Cancel Button
 
 ```jsx
@@ -198,7 +230,7 @@ const isConfirmed = await confirm({
 
 ### Custom Actions
 
-Full control over the action buttons with access to dialog state:
+Full control over the action buttons with access to dialog state. The first custom action receives focus when the dialog opens.
 
 ```jsx
 const isConfirmed = await confirm({
@@ -220,6 +252,8 @@ const isConfirmed = await confirm({
   )
 })
 ```
+
+The v1 signature `customActions: (onConfirm, onCancel) => ...` keeps working as well.
 
 ### Custom Styling
 
@@ -291,6 +325,7 @@ interface ConfirmOptions {
   description?: ReactNode
   contentSlot?: ReactNode
   icon?: ReactNode
+  media?: ReactNode
 
   // Button Text
   confirmText?: string
@@ -308,10 +343,13 @@ interface ConfirmOptions {
   alertDialogContent?: ComponentPropsWithRef<typeof AlertDialogContent>
   alertDialogHeader?: ComponentPropsWithRef<typeof AlertDialogHeader>
   alertDialogTitle?: ComponentPropsWithRef<typeof AlertDialogTitle>
+  alertDialogMedia?: ComponentPropsWithRef<typeof AlertDialogMedia>
   alertDialogDescription?: ComponentPropsWithRef<typeof AlertDialogDescription>
   alertDialogFooter?: ComponentPropsWithRef<typeof AlertDialogFooter>
 }
 ```
+
+`alertDialogContent` additionally accepts `size: 'default' | 'sm'`.
 
 ### CustomActionsProps
 
@@ -322,7 +360,9 @@ interface CustomActionsProps {
   confirm: () => void
   cancel: () => void
   config: ConfirmOptions
-  setConfig: (config: ConfirmOptions | ((prev: ConfirmOptions) => ConfirmOptions)) => void
+  setConfig: (
+    config: ConfirmOptions | ((prev: ConfirmOptions) => ConfirmOptions)
+  ) => void
 }
 ```
 
@@ -336,6 +376,17 @@ const result: boolean = await confirm(options)
 
 // Update config of an open dialog
 confirm.updateConfig((prev) => ({ ...prev, title: 'New Title' }))
+```
+
+`confirm` is referentially stable for the lifetime of the provider, so it is safe to list in effect dependencies and components that call `useConfirm` do not re-render while a dialog opens, updates or closes.
+
+### ConfirmDialogProvider
+
+```typescript
+interface ConfirmDialogProviderProps {
+  defaultOptions?: ConfirmOptions // merged into every confirm() call
+  children: ReactNode
+}
 ```
 
 ## Migrating from v1
@@ -376,6 +427,29 @@ To enable class name completion for the `className` prop, add this to your edito
   ]
 }
 ```
+
+## Development
+
+This repository is a pnpm workspace (Node.js 22+, the pnpm version is pinned in `package.json` and picked up by Corepack).
+
+```bash
+pnpm install
+pnpm build          # library (tsup) and demo site (Next.js)
+pnpm lint           # ESLint (flat config) for every package
+pnpm type-check     # tsc for every package
+pnpm test           # Vitest: library suite on React 19 and on React 18 against the built bundle
+pnpm test:e2e       # Playwright tests for the demo site in Chromium, Firefox and WebKit (run `pnpm --filter web exec playwright install --with-deps` once)
+pnpm check-package  # publint + arethetypeswrong on the packed library
+pnpm format         # Prettier (with the Tailwind class sorter)
+```
+
+### Releasing
+
+1. Bump `version` in `packages/confirm-dialog/package.json` and add a `CHANGELOG.md` entry.
+2. Merge, then push a matching tag: `git tag v2.1.0 && git push origin v2.1.0`.
+3. The `Release` workflow builds, lints, tests, runs the package checks and publishes to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (no token needed; `release.yml` has to be registered once as a trusted publisher for the package on npmjs.com). A version with a prerelease suffix (`-rc.1`, `-beta.0`, ...) is published to the `next` dist-tag instead of `latest`.
+
+Publishing manually works too: `pnpm --filter @omit/react-confirm-dialog publish` runs the build through `prepack`.
 
 ## Related Projects
 

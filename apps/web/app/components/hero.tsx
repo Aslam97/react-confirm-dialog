@@ -1,10 +1,9 @@
 'use client'
 
-import React from 'react'
 import { Github } from 'lucide-react'
-import { useConfirm } from '@omit/react-confirm-dialog'
-import { Button } from './ui/button'
 import Link from 'next/link'
+import { useConfirm } from '@omit/react-confirm-dialog'
+import { Button } from '@/components/ui/button'
 
 export function Hero() {
   const confirm = useConfirm()
@@ -22,24 +21,24 @@ export function Hero() {
 
   return (
     <div className="text-center">
-      <h1 className="text-5xl font-extrabold tracking-tight mb-4">
+      <h1 className="mb-4 text-5xl font-extrabold tracking-tight">
         Confirm Dialog
       </h1>
-      <p className="text-xl mb-6">
+      <p className="mb-6 text-xl">
         A flexible and accessible confirm dialog for React app.
       </p>
-      <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 gap-x-2">
+      <div className="flex flex-col justify-center space-y-4 gap-x-2 sm:flex-row sm:space-y-0">
         <Button onClick={handleConfirmClick}>Try Click Me</Button>
-        <Link
-          href="https://github.com/Aslam97/react-confirm-dialog"
-          passHref
-          target="_blank"
-        >
-          <Button variant="outline">
-            <Github className="mr-2 size-5" />
+        <Button variant="outline" asChild>
+          <Link
+            href="https://github.com/Aslam97/react-confirm-dialog"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Github className="mr-2 size-5" aria-hidden="true" />
             GitHub
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </div>
   )

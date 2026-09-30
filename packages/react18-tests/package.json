@@ -1,0 +1,31 @@
+{
+  "name": "@omit/react-confirm-dialog-react18-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runs the @omit/react-confirm-dialog test-suite against the oldest supported React major (18).",
+  "scripts": {
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@omit/react-confirm-dialog": "workspace:*",
+    "@radix-ui/react-alert-dialog": "^1.1.23",
+    "@radix-ui/react-compose-refs": "^1.1.5",
+    "@radix-ui/react-slot": "^1.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^22.20.4",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "jsdom": "^27.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
