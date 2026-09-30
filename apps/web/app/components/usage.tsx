@@ -5,38 +5,16 @@ import { CodeBlock } from './code-block'
 export const Usage = () => {
   return (
     <div className="space-y-3">
-      <span>
+      <div>
         <h2 className="text-base font-medium">Usage</h2>
         <p className="text-sm">
           Render the <strong>ConfirmDialogProvider</strong> at the root of your
-          application.
+          application. The package is marked as a client module, so it can be
+          rendered directly from a Next.js server layout.
         </p>
-      </span>
-      <CodeBlock initialHeight={270}>{`// confirm-dialog-provider.tsx
-'use client'
-
-import {
-  ConfirmDialogProvider as BaseConfirmDialogProvider,
-  ConfirmOptions
-} from '@omit/react-confirm-dialog'
-
-interface Props {
-  children: React.ReactNode
-  defaultOptions?: ConfirmOptions
-}
-
-export const ConfirmDialogProvider = ({ children, defaultOptions }: Props) => {
-  return (
-    <BaseConfirmDialogProvider defaultOptions={defaultOptions}>
-      {children}
-    </BaseConfirmDialogProvider>
-  )
-}
-
-export default ConfirmDialogProvider
-
-// layout.tsx
-import { ConfirmDialogProvider } from '@/confirm-dialog-provider'
+      </div>
+      <CodeBlock initialHeight={270}>{`// app/layout.tsx
+import { ConfirmDialogProvider } from '@omit/react-confirm-dialog'
 
 export default function RootLayout({
   children
@@ -46,12 +24,36 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConfirmDialogProvider>
+        <ConfirmDialogProvider
+          defaultOptions={{ confirmText: 'Confirm', cancelText: 'Cancel' }}
+        >
           {children}
         </ConfirmDialogProvider>
       </body>
     </html>
   )
+}
+
+// any client component
+'use client'
+
+import { useConfirm } from '@omit/react-confirm-dialog'
+
+export function DeleteButton() {
+  const confirm = useConfirm()
+
+  const handleClick = async () => {
+    const confirmed = await confirm({
+      title: 'Delete item?',
+      description: 'This action cannot be undone.'
+    })
+
+    if (confirmed) {
+      // ...
+    }
+  }
+
+  return <button onClick={handleClick}>Delete</button>
 }`}</CodeBlock>
     </div>
   )

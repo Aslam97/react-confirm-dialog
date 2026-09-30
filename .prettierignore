@@ -1,0 +1,10 @@
+node_modules
+dist
+.next
+.turbo
+coverage
+playwright-report
+test-results
+pnpm-lock.yaml
+packages/confirm-dialog/README.md
+packages/confirm-dialog/LICENSE
