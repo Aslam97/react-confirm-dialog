@@ -2,8 +2,6 @@
 
 ## 2.1.0
 
-Currently available as a prerelease: `npm install @omit/react-confirm-dialog@next`.
-
 ### Behavior changes to review before upgrading
 
 No API was removed or renamed, but four bugs were fixed in ways an application may have accidentally depended on:

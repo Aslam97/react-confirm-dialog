@@ -438,7 +438,7 @@ pnpm build          # library (tsup) and demo site (Next.js)
 pnpm lint           # ESLint (flat config) for every package
 pnpm type-check     # tsc for every package
 pnpm test           # Vitest: library suite on React 19 and on React 18 against the built bundle
-pnpm test:e2e       # Playwright tests for the demo site (run `pnpm --filter web exec playwright install chromium` once)
+pnpm test:e2e       # Playwright tests for the demo site in Chromium, Firefox and WebKit (run `pnpm --filter web exec playwright install --with-deps` once)
 pnpm check-package  # publint + arethetypeswrong on the packed library
 pnpm format         # Prettier (with the Tailwind class sorter)
 ```
@@ -446,8 +446,8 @@ pnpm format         # Prettier (with the Tailwind class sorter)
 ### Releasing
 
 1. Bump `version` in `packages/confirm-dialog/package.json` and add a `CHANGELOG.md` entry.
-2. Merge, then push a matching tag, for example `git tag v2.1.0-rc.1 && git push origin v2.1.0-rc.1`.
-3. The `Release` workflow builds, lints, tests, runs the package checks and publishes to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (no token needed; `release.yml` has to be registered once as a trusted publisher for the package on npmjs.com). Prerelease versions (`-rc.1`, `-beta.0`, ...) are published to the `next` dist-tag, so existing users keep getting the last stable version until a final version such as `v2.1.0` is tagged.
+2. Merge, then push a matching tag: `git tag v2.1.0 && git push origin v2.1.0`.
+3. The `Release` workflow builds, lints, tests, runs the package checks and publishes to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (no token needed; `release.yml` has to be registered once as a trusted publisher for the package on npmjs.com). A version with a prerelease suffix (`-rc.1`, `-beta.0`, ...) is published to the `next` dist-tag instead of `latest`.
 
 Publishing manually works too: `pnpm --filter @omit/react-confirm-dialog publish` runs the build through `prepack`.
 
