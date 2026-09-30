@@ -15,19 +15,31 @@ const requireFromLibrary = createRequire(path.join(libraryDir, 'package.json'))
 
 describe('CommonJS bundle', () => {
   it('loads with require() and renders on the server', () => {
-    const lib = requireFromLibrary('./dist/index.js') as typeof import('@omit/react-confirm-dialog')
+    const lib = requireFromLibrary(
+      './dist/index.js'
+    ) as typeof import('@omit/react-confirm-dialog')
     const React = requireFromLibrary('react') as typeof import('react')
-    const { renderToString } = requireFromLibrary('react-dom/server') as typeof import('react-dom/server')
+    const { renderToString } = requireFromLibrary(
+      'react-dom/server'
+    ) as typeof import('react-dom/server')
 
     expect(typeof lib.ConfirmDialogProvider).toBe('function')
     expect(typeof lib.useConfirm).toBe('function')
 
     function Consumer() {
       const confirm = lib.useConfirm()
-      return React.createElement('span', null, typeof confirm === 'function' ? 'ready' : 'broken')
+      return React.createElement(
+        'span',
+        null,
+        typeof confirm === 'function' ? 'ready' : 'broken'
+      )
     }
     const html = renderToString(
-      React.createElement(lib.ConfirmDialogProvider, null, React.createElement(Consumer))
+      React.createElement(
+        lib.ConfirmDialogProvider,
+        null,
+        React.createElement(Consumer)
+      )
     )
     expect(html).toContain('ready')
   })
