@@ -443,6 +443,14 @@ pnpm check-package  # publint + arethetypeswrong on the packed library
 pnpm format         # Prettier (with the Tailwind class sorter)
 ```
 
+### Releasing
+
+1. Bump `version` in `packages/confirm-dialog/package.json` and add a `CHANGELOG.md` entry.
+2. Merge, then push a matching tag: `git tag v2.1.0 && git push origin v2.1.0`.
+3. The `Release` workflow builds, lints, tests, runs the package checks and publishes to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (no token needed; `release.yml` has to be registered once as a trusted publisher for the package on npmjs.com).
+
+Publishing manually works too: `pnpm --filter @omit/react-confirm-dialog publish` runs the build through `prepack`.
+
 ## Related Projects
 
 - [Minimal Tiptap Editor](https://github.com/Aslam97/shadcn-minimal-tiptap)

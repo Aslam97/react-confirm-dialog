@@ -1,0 +1,54 @@
+name: Release
+
+# Publishes @omit/react-confirm-dialog to npm when a version tag is pushed.
+# Authentication uses npm trusted publishing (OIDC): configure this workflow
+# file (release.yml) as a trusted publisher for the package on npmjs.com.
+# Provenance attestations are generated automatically by npm.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Verify that the tag matches the package version
+        working-directory: packages/confirm-dialog
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "v$version" != "${GITHUB_REF_NAME}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package version v$version" >&2
+            exit 1
+          fi
+
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm type-check
+      - run: pnpm test
+      - run: pnpm check-package
+
+      - name: Publish to npm
+        working-directory: packages/confirm-dialog
+        run: npm publish
