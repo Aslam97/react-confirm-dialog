@@ -6,10 +6,10 @@ import { Hero } from './components/hero'
 
 export default function Home() {
   return (
-    <div className="py-12 sm:py-24 px-4">
-      <main className="w-full mx-auto max-w-2xl">
+    <div className="px-4 py-12 sm:py-24">
+      <main className="mx-auto w-full max-w-2xl">
         <Hero />
-        <div className="flex flex-col mt-12 sm:mt-24 gap-12">
+        <div className="mt-12 flex flex-col gap-12 sm:mt-24">
           <Installation />
           <Types />
           <Usage />

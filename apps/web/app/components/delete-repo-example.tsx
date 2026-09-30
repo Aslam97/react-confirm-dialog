@@ -1,8 +1,11 @@
+'use client'
+
 import React from 'react'
 import { Trash2 } from 'lucide-react'
-import { ConfirmOptions, useConfirm } from '@omit/react-confirm-dialog'
-import { Button } from './ui/button'
+import { useConfirm } from '@omit/react-confirm-dialog'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import type { DialogType } from './dialog-types'
 
 const REPOSITORY_NAME = 'Aslam97/example'
 const SNIPPET = `const REPOSITORY_NAME = 'Aslam97/example'
@@ -102,15 +105,9 @@ export const DeleteRepository: React.FC = () => {
   )
 }`
 
-interface ActiveType {
-  name: string
-  snippet: string
-  action: (confirm: (options: ConfirmOptions) => Promise<boolean>) => void
-}
-
 interface DeleteRepositoryProps {
-  activeType: ActiveType
-  setActiveType: React.Dispatch<React.SetStateAction<ActiveType>>
+  activeType: DialogType
+  setActiveType: React.Dispatch<React.SetStateAction<DialogType>>
 }
 
 interface DeleteConfirmContentProps {
@@ -195,10 +192,12 @@ export const DeleteRepository: React.FC<DeleteRepositoryProps> = ({
     } else {
       console.log('Deletion canceled')
     }
+
+    return isConfirmed
   }
 
   const handleButtonClick = () => {
-    handleDelete()
+    void handleDelete()
     setActiveType({
       name: 'Delete Repository',
       snippet: SNIPPET,
