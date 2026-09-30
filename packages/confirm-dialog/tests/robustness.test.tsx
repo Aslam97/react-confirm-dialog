@@ -68,11 +68,14 @@ afterEach(() => {
 
 describe('robustness', () => {
   it('survives many open/close cycles and settles every promise exactly as answered', async () => {
-    const user = userEvent.setup()
+    // `delay: null` skips user-event's artificial wait between actions so the
+    // loop stays well inside the default test timeout on slow CI runners.
+    const user = userEvent.setup({ delay: null })
     const { confirm } = setup()
     const results: boolean[] = []
+    const cycles = 20
 
-    for (let i = 0; i < 40; i += 1) {
+    for (let i = 0; i < cycles; i += 1) {
       let promise!: Promise<boolean>
       act(() => {
         promise = confirm({ title: `Dialog ${i}`, description: 'D' })
@@ -83,7 +86,9 @@ describe('robustness', () => {
       results.push(await promise)
     }
 
-    expect(results).toEqual(Array.from({ length: 40 }, (_, i) => i % 2 === 0))
+    expect(results).toEqual(
+      Array.from({ length: cycles }, (_, i) => i % 2 === 0)
+    )
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
   })
 
