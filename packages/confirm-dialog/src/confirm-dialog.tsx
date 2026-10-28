@@ -64,8 +64,12 @@ export interface ConfirmDialogState {
   resolver: ((value: boolean) => void) | null
 }
 
+export interface ConfirmRequestOptions extends ConfirmOptions {
+  title: ReactNode
+}
+
 export interface ConfirmFunction {
-  (options: ConfirmOptions): Promise<boolean>
+  (options: ConfirmRequestOptions): Promise<boolean>
   updateConfig?: ConfigUpdater
 }
 
@@ -400,7 +404,7 @@ export const useConfirm = (): ConfirmFunction & {
   // during render) keeps this hook pure and works with any provider value.
   return React.useMemo(
     () =>
-      Object.assign((options: ConfirmOptions) => confirm(options), {
+      Object.assign((options: ConfirmRequestOptions) => confirm(options), {
         updateConfig
       }),
     [confirm, updateConfig]
