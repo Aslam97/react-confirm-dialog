@@ -351,6 +351,14 @@ interface ConfirmOptions {
 
 `alertDialogContent` additionally accepts `size: 'default' | 'sm'`.
 
+A per-call `confirm()` request must include a title so the alert dialog has an accessible name. The `ConfirmOptions` type stays partial for provider defaults and configuration updates; the callable `ConfirmFunction` takes `ConfirmRequestOptions`:
+
+```typescript
+interface ConfirmRequestOptions extends ConfirmOptions {
+  title: ReactNode
+}
+```
+
 ### CustomActionsProps
 
 When using the enhanced custom actions API:
@@ -371,8 +379,8 @@ interface CustomActionsProps {
 ```typescript
 const confirm = useConfirm()
 
-// Open a dialog (returns a promise)
-const result: boolean = await confirm(options)
+// Open a dialog (returns a promise; title is required)
+const result: boolean = await confirm({ title: 'Confirm action', ...options })
 
 // Update config of an open dialog
 confirm.updateConfig((prev) => ({ ...prev, title: 'New Title' }))

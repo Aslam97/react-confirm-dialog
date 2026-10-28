@@ -15,6 +15,7 @@ import {
   ConfirmDialogProvider,
   useConfirm,
   type ConfirmOptions,
+  type ConfirmRequestOptions,
   type CustomActionsProps
 } from '@omit/react-confirm-dialog'
 
@@ -73,7 +74,7 @@ function renderWithProvider({
     return apiRef.current
   }
 
-  const confirm = (options: ConfirmOptions) => {
+  const confirm = (options: ConfirmRequestOptions) => {
     let promise: Promise<boolean> | undefined
     act(() => {
       promise = api()(options)
@@ -570,19 +571,21 @@ describe('rendering', () => {
     )
   })
 
-  it('renders the title element when only an icon is provided', () => {
+  it('renders an icon alongside the required accessible title', () => {
     const { confirm } = renderWithProvider()
     void confirm({
+      title: 'Icon title',
       description: 'D',
       icon: <svg data-testid="icon" aria-hidden="true" />
     })
 
+    expect(getDialog()).toHaveAccessibleName('Icon title')
     expect(
       getDialog().querySelector('[data-slot="alert-dialog-title"]')
     ).not.toBeNull()
   })
 
-  it('omits the description reference and stays silent when description or title are missing', async () => {
+  it('omits the description reference when description is missing', async () => {
     const user = userEvent.setup()
     const { confirm } = renderWithProvider()
 
@@ -594,14 +597,6 @@ describe('rendering', () => {
     ).toBeNull()
     await user.click(getButton('Cancel'))
     await first
-
-    const second = confirm({ description: 'Only description' })
-    expect(
-      getDialog().querySelector('[data-slot="alert-dialog-title"]')
-    ).toBeNull()
-    expect(getDialog()).toHaveAccessibleDescription('Only description')
-    await user.click(getButton('Cancel'))
-    await second
   })
 })
 
